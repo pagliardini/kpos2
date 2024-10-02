@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<h1>Realizar Venta</h1>
+
+<form action="{{ url_for('ventas.procesar_venta') }}" method="POST">
+    <h2>Lista de Productos</h2>
+    <ul>
+        {% for producto in productos %}
+        <li>
+            <input type="checkbox" name="productos" value="{{ producto.id }}">
+            {{ producto.nombre }} - ${{ producto.precio }}
+        </li>
+        {% endfor %}
+    </ul>
+
+    <button type="submit">Realizar Venta</button>
+</form>
+
+</body>
+</html>
