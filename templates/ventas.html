@@ -70,7 +70,7 @@
     <div class="modal-content">
         <span class="close" onclick="cerrarModal()">&times;</span>
         <h2>Buscar Producto por Descripción</h2>
-        <input type="text" id="descripcion" placeholder="Escribe para buscar..." onkeyup="buscarProductoPorDescripcion()">
+        <input type="text" id="descripcion" placeholder="Escribe para buscar..." onkeyup="buscarProductoPorDescripcion()" autocomplete="off">
         <ul id="resultado-busqueda">
             <!-- Aquí se mostrarán los resultados de búsqueda -->
         </ul>
@@ -150,6 +150,7 @@ function mostrarModal() {
     document.getElementById('modal-buscar').style.display = 'block';
     document.getElementById('descripcion').value = '';  // Limpiar el input
     document.getElementById('resultado-busqueda').innerHTML = '';  // Limpiar resultados
+    document.getElementById('descripcion').focus();  // Establecer el foco en el input del modal
 }
 
 // Función para cerrar el modal
@@ -211,6 +212,16 @@ function procesarVenta() {
         window.location.reload();
     });
 }
+
+// Event listener for keydown events
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'F6') {  // Check if F6 is pressed
+        event.preventDefault(); // Prevent default action (if any)
+        mostrarModal();         // Call the function to show the modal
+    } else if (event.key === 'Escape') {  // Check if Escape is pressed
+        cerrarModal();         // Call the function to close the modal
+    }
+});
 </script>
 
 
