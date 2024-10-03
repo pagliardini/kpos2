@@ -6,7 +6,7 @@
     <title>Ventas</title>
 
     <!-- Estilos en línea (CSS) -->
-    <style>
+        <style>
         body {
             font-family: Arial, sans-serif;
         }
@@ -43,8 +43,51 @@
             cursor: pointer;
         }
         .selected {
-        background-color: #ddd;
-    }
+            background-color: #ddd;
+        }
+
+        ul#lista-productos {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul#lista-productos li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        button {
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        button[onclick^="actualizarCantidad"] {
+            background-color: #f8f9fa;
+            color: #000;
+            border: 1px solid #ddd;
+            padding: 5px;
+        }
+
+        button[onclick^="actualizarCantidad"]:hover {
+            background-color: #e9ecef;
+        }
     </style>
 </head>
 <body>
@@ -115,7 +158,6 @@ function agregarProductoPorCodigo(codigo) {
         });
 }
 
-// Función para actualizar la lista de productos seleccionados
 function actualizarListaProductos() {
     const lista = document.getElementById('lista-productos');
     lista.innerHTML = '';
@@ -123,10 +165,14 @@ function actualizarListaProductos() {
     productosSeleccionados.forEach(producto => {
         total += producto.precio * producto.cantidad;
         lista.innerHTML += `
-            <li>
-                ${producto.nombre} - $${producto.precio} x
-                <input type="number" min="1" value="${producto.cantidad}" onchange="actualizarCantidad(${producto.id}, this.value)">
-                <button onclick="eliminarProducto(${producto.id})">Eliminar</button>
+            <li style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                <span>${producto.nombre} - $${producto.precio} x </span>
+                <div style="display: flex; align-items: center;">
+                    <button onclick="actualizarCantidad(${producto.id}, ${producto.cantidad - 1})" style="padding: 5px;">&#x25BC;</button>
+                    <span style="padding: 0 10px;">${producto.cantidad}</span>
+                    <button onclick="actualizarCantidad(${producto.id}, ${producto.cantidad + 1})" style="padding: 5px;">&#x25B2;</button>
+                </div>
+                <button onclick="eliminarProducto(${producto.id})" style="margin-left: 10px;">Eliminar</button>
             </li>
         `;
     });
