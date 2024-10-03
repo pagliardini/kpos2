@@ -4,25 +4,215 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ventas</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <!-- Estilos en línea (CSS) -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 8px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
 <h1>Realizar Venta</h1>
 
-<form action="{{ url_for('ventas.procesar_venta') }}" method="POST">
-    <h2>Lista de Productos</h2>
-    <ul>
-        {% for producto in productos %}
-        <li>
-            <input type="checkbox" name="productos" value="{{ producto.id }}">
-            {{ producto.nombre }} - ${{ producto.precio }}
-        </li>
-        {% endfor %}
-    </ul>
-
-    <button type="submit">Realizar Venta</button>
+<!-- Formulario para ingresar código de producto -->
+<form id="form-venta" onsubmit="event.preventDefault(); agregarProductoPorCodigo(document.getElementById('codigo').value);">
+    <h2>Ingrese código de producto</h2>
+    <input type="text" id="codigo" placeholder="Código de producto" required>
+    <button type="submit">Agregar Producto</button>
 </form>
+
+<ul id="lista-productos">
+    <!-- Aquí se mostrarán los productos agregados -->
+</ul>
+
+<h3 id="total">Total: $0.00</h3>
+
+<!-- Botones para procesar venta y buscar por descripción -->
+<button onclick="procesarVenta()">Realizar Venta</button>
+<button onclick="mostrarModal()">Buscar producto por descripción</button>
+
+<!-- Modal de búsqueda de productos por descripción -->
+<div id="modal-buscar" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarModal()">&times;</span>
+        <h2>Buscar Producto por Descripción</h2>
+        <input type="text" id="descripcion" placeholder="Escribe para buscar..." onkeyup="buscarProductoPorDescripcion()">
+        <ul id="resultado-busqueda">
+            <!-- Aquí se mostrarán los resultados de búsqueda -->
+        </ul>
+    </div>
+</div>
+
+<!-- Scripts en línea (JavaScript) -->
+<script>
+// Al cargar la página, establece el foco en el input de código
+window.onload = function() {
+    document.getElementById('codigo').focus();
+};
+
+let productosSeleccionados = [];
+
+// Función para agregar un producto por código
+function agregarProductoPorCodigo(codigo) {
+    fetch(`/buscar_producto?codigo=${codigo}`)
+        .then(response => response.json())
+        .then(producto => {
+            if (producto) {
+                const existe = productosSeleccionados.find(p => p.id === producto.id);
+                if (!existe) {
+                    producto.cantidad = 1;
+                    productosSeleccionados.push(producto);
+                } else {
+                    existe.cantidad += 1;
+                }
+                actualizarListaProductos();
+            } else {
+                alert("Producto no encontrado");
+            }
+            // Limpiar el input después de agregar el producto
+            document.getElementById('codigo').value = ''; // Limpiar el input
+            document.getElementById('codigo').focus(); // Volver a enfocar el input
+        })
+        .catch(error => {
+            console.error('Error al buscar el producto:', error);
+        });
+}
+
+// Función para actualizar la lista de productos seleccionados
+function actualizarListaProductos() {
+    const lista = document.getElementById('lista-productos');
+    lista.innerHTML = '';
+    let total = 0;
+    productosSeleccionados.forEach(producto => {
+        total += producto.precio * producto.cantidad;
+        lista.innerHTML += `
+            <li>
+                ${producto.nombre} - $${producto.precio} x
+                <input type="number" min="1" value="${producto.cantidad}" onchange="actualizarCantidad(${producto.id}, this.value)">
+                <button onclick="eliminarProducto(${producto.id})">Eliminar</button>
+            </li>
+        `;
+    });
+    document.getElementById('total').innerText = 'Total: $' + total.toFixed(2);
+}
+
+// Función para actualizar la cantidad de un producto
+function actualizarCantidad(id, nuevaCantidad) {
+    const producto = productosSeleccionados.find(p => p.id === id);
+    if (producto) {
+        producto.cantidad = parseInt(nuevaCantidad);
+        actualizarListaProductos();
+    }
+}
+
+// Función para eliminar un producto de la lista
+function eliminarProducto(id) {
+    productosSeleccionados = productosSeleccionados.filter(p => p.id !== id);
+    actualizarListaProductos();
+}
+
+// Función para mostrar el modal de búsqueda por descripción
+function mostrarModal() {
+    document.getElementById('modal-buscar').style.display = 'block';
+    document.getElementById('descripcion').value = '';  // Limpiar el input
+    document.getElementById('resultado-busqueda').innerHTML = '';  // Limpiar resultados
+}
+
+// Función para cerrar el modal
+function cerrarModal() {
+    document.getElementById('modal-buscar').style.display = 'none';
+}
+
+// Función para buscar productos a medida que escribes en la ventana modal
+function buscarProductoPorDescripcion() {
+    const descripcion = document.getElementById('descripcion').value;
+    if (descripcion.length > 0) {
+        fetch(`/buscar_producto_descripcion?descripcion=${descripcion}`)
+            .then(response => response.json())
+            .then(productos => {
+                const resultados = document.getElementById('resultado-busqueda');
+                resultados.innerHTML = '';
+                productos.forEach(producto => {
+                    const li = document.createElement('li');
+                    li.textContent = `${producto.nombre} - $${producto.precio}`;
+                    li.onclick = () => agregarProductoPorId(producto.id);
+                    resultados.appendChild(li);
+                });
+            });
+    } else {
+        document.getElementById('resultado-busqueda').innerHTML = '';
+    }
+}
+
+// Función para agregar un producto desde el modal a la factura
+function agregarProductoPorId(idProducto) {
+    fetch(`/buscar_producto_por_id?id=${idProducto}`)
+        .then(response => response.json())
+        .then(producto => {
+            if (producto) {
+                const existe = productosSeleccionados.find(p => p.id === producto.id);
+                if (!existe) {
+                    producto.cantidad = 1;
+                    productosSeleccionados.push(producto);
+                } else {
+                    existe.cantidad += 1;
+                }
+                actualizarListaProductos();
+            }
+            cerrarModal();
+        });
+}
+
+// Procesar la venta y enviar los productos al backend
+function procesarVenta() {
+    const idsProductos = productosSeleccionados.map(p => ({ id: p.id, cantidad: p.cantidad }));
+    const formData = new FormData();
+    formData.append('productos', JSON.stringify(idsProductos));
+
+    fetch('{{ url_for('ventas.procesar_venta') }}', {
+        method: 'POST',
+        body: formData
+    }).then(() => {
+        alert('Venta procesada con éxito');
+        window.location.reload();
+    });
+}
+</script>
+
 
 </body>
 </html>
