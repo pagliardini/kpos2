@@ -42,6 +42,9 @@
             text-decoration: none;
             cursor: pointer;
         }
+        .selected {
+        background-color: #ddd;
+    }
     </style>
 </head>
 <body>
@@ -70,7 +73,7 @@
     <div class="modal-content">
         <span class="close" onclick="cerrarModal()">&times;</span>
         <h2>Buscar Producto por Descripción</h2>
-        <input type="text" id="descripcion" placeholder="Escribe para buscar..." onkeyup="buscarProductoPorDescripcion()" autocomplete="off">
+        <input type="text" id="descripcion" placeholder="Escribe para buscar..." oninput="buscarProductoPorDescripcion()" onkeydown="manejarTeclasNavegacion(event)" autocomplete="off">
         <ul id="resultado-busqueda">
             <!-- Aquí se mostrarán los resultados de búsqueda -->
         </ul>
@@ -157,6 +160,8 @@ function mostrarModal() {
 function cerrarModal() {
     document.getElementById('modal-buscar').style.display = 'none';
 }
+let productosEncontrados = [];  // Para guardar los productos encontrados en la búsqueda
+let indiceSeleccionado = -1;  // Para seguir el índice del producto seleccionado
 
 // Función para buscar productos a medida que escribes en la ventana modal
 function buscarProductoPorDescripcion() {
@@ -165,17 +170,55 @@ function buscarProductoPorDescripcion() {
         fetch(`/buscar_producto_descripcion?descripcion=${descripcion}`)
             .then(response => response.json())
             .then(productos => {
+                productosEncontrados = productos;
                 const resultados = document.getElementById('resultado-busqueda');
                 resultados.innerHTML = '';
-                productos.forEach(producto => {
+                productos.forEach((producto, index) => {
                     const li = document.createElement('li');
                     li.textContent = `${producto.nombre} - $${producto.precio}`;
+                    li.dataset.index = index;  // Guarda el índice del producto
                     li.onclick = () => agregarProductoPorId(producto.id);
                     resultados.appendChild(li);
                 });
+                indiceSeleccionado = -1;  // Reiniciar el índice
             });
     } else {
         document.getElementById('resultado-busqueda').innerHTML = '';
+    }
+}
+
+// Función para manejar las teclas dentro del modal
+document.getElementById('descripcion').addEventListener('keydown', function(event) {
+    const resultados = document.getElementById('resultado-busqueda');
+    const items = resultados.getElementsByTagName('li');
+
+    if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        if (indiceSeleccionado < items.length - 1) {
+            indiceSeleccionado++;
+            resaltarProductoSeleccionado(items);
+        }
+    } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        if (indiceSeleccionado > 0) {
+            indiceSeleccionado--;
+            resaltarProductoSeleccionado(items);
+        }
+    } else if (event.key === 'Enter') {
+        event.preventDefault();
+        if (indiceSeleccionado >= 0 && indiceSeleccionado < productosEncontrados.length) {
+            agregarProductoPorId(productosEncontrados[indiceSeleccionado].id);
+        }
+    }
+});
+
+// Función para resaltar el producto seleccionado
+function resaltarProductoSeleccionado(items) {
+    for (let i = 0; i < items.length; i++) {
+        items[i].classList.remove('selected');
+    }
+    if (indiceSeleccionado >= 0 && indiceSeleccionado < items.length) {
+        items[indiceSeleccionado].classList.add('selected');
     }
 }
 
