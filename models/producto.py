@@ -6,3 +6,4 @@ class Producto(db.Model):
     nombre = db.Column(db.String(50), nullable=False)
     precio = db.Column(db.Float, nullable=False)
     codigo1 = db.Column(db.String(50), nullable=False)
+    

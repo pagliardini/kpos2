@@ -7,6 +7,7 @@ from views.productos import productos_bp
 
 def create_app():
     app = Flask(__name__, static_folder='static')
+    app.secret_key = 'clave_secreta_random'  # Clave secreta
     app.config.from_object(Config)
 
     # Inicializamos SQLAlchemy

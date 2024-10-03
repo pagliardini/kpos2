@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Productos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<h1>Lista de Productos</h1>
+
+<!-- Mensajes flash para notificaciones -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+<!-- Formulario para agregar un nuevo producto -->
+<h2>Agregar Producto</h2>
+<form action="{{ url_for('productos.agregar_producto') }}" method="POST">
+    <input type="text" name="nombre" placeholder="Nombre del producto" required>
+    <input type="number" name="precio" placeholder="Precio del producto" required>
+    <input type="text" name="codigo" placeholder="Codigo de barras" required>
+    <button type="submit">Agregar Producto</button>
+</form>
+
+<!-- Lista de productos -->
+<h2>Productos Existentes</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Acciones</th>
+    </tr>
+    {% for producto in productos %}
+    <tr>
+        <td>{{ producto.id }}</td>
+        <td>{{ producto.nombre }}</td>
+        <td>${{ producto.precio }}</td>
+        <td>
+            <a href="{{ url_for('productos.editar_producto', id=producto.id) }}">Editar</a>
+            <form action="{{ url_for('productos.eliminar_producto', id=producto.id) }}" method="POST" style="display:inline;">
+                <button type="submit">Eliminar</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
