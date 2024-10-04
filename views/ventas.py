@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, jsonif
 from models.producto import Producto
 from models.factura import Factura
 from extensions import db
+import json
 
 ventas_bp = Blueprint('ventas', __name__)
 
@@ -14,23 +15,32 @@ def ventas():
 
 
 # Ruta para procesar la venta
-# Ruta para procesar la venta
 @ventas_bp.route('/procesar_venta', methods=['POST'])
 def procesar_venta():
-    # Obtener IDs de productos seleccionados desde el formulario
-    ids_productos = request.form.getlist('productos')  # Aquí usas IDs en lugar de códigos de barras
+    # Obtener JSON enviado en el cuerpo de la petición
+    data = request.get_json()  # Obtener el JSON directamente
 
-    if ids_productos:
-        total_venta = 0
-        for id_producto in ids_productos:
-            producto = Producto.query.get(id_producto)  # Seguimos utilizando el ID (int) para buscar el producto
-            if producto:
-                total_venta += producto.precio
+    productos = data.get('productos', [])  # Obtener la lista de productos
 
-        # Crear la nueva factura
-        nueva_factura = Factura(total=total_venta)
-        db.session.add(nueva_factura)
-        db.session.commit()
+    total_venta = 0
+    if productos:
+        for producto_data in productos:
+            id_producto = producto_data.get('id')
+            cantidad = producto_data.get('cantidad', 1)
+
+            producto = Producto.query.get(id_producto)  # Buscar el producto por ID
+            if producto and producto.precio:
+                total_venta += float(producto.precio) * int(cantidad)
+            else:
+                print(f"Producto con ID {id_producto} no encontrado o sin precio")
+
+        print(f"Total de la venta calculado: {total_venta}")
+
+        # Crear la nueva factura si el total es mayor a 0
+        if total_venta > 0:
+            nueva_factura = Factura(total=total_venta)
+            db.session.add(nueva_factura)
+            db.session.commit()
 
     return redirect(url_for('ventas.ventas'))
 @ventas_bp.route('/buscar_producto')

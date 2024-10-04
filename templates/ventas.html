@@ -287,18 +287,20 @@ function agregarProductoPorId(idProducto) {
         });
 }
 
-// Procesar la venta y enviar los productos al backend
 function procesarVenta() {
     const idsProductos = productosSeleccionados.map(p => ({ id: p.id, cantidad: p.cantidad }));
-    const formData = new FormData();
-    formData.append('productos', JSON.stringify(idsProductos));
 
     fetch('{{ url_for('ventas.procesar_venta') }}', {
         method: 'POST',
-        body: formData
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ productos: idsProductos })  // Envía los productos como JSON
     }).then(() => {
         alert('Venta procesada con éxito');
         window.location.reload();
+    }).catch((error) => {
+        console.error('Error procesando la venta:', error);
     });
 }
 
