@@ -5,111 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ventas</title>
 
-    <!-- Estilos en línea (CSS) -->
-        <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        h1, h2, h3 {
-            color: #333;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        .modal-content {
-            background-color: #fff;
-            margin: 15% auto;
-            padding: 20px;
-            width: 80%;
-            max-width: 400px;
-            border-radius: 8px;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover, .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .selected {
-            background-color: #ddd;
-        }
+    <!-- Vinculamos el archivo CSS externo -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles-venta.css') }}">
 
-        ul#lista-productos {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        ul#lista-productos li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-        }
-
-        button {
-            cursor: pointer;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        button:focus {
-            outline: none;
-        }
-
-        button[onclick^="actualizarCantidad"] {
-            background-color: #f8f9fa;
-            color: #000;
-            border: 1px solid #ddd;
-            padding: 5px;
-        }
-
-        button[onclick^="actualizarCantidad"]:hover {
-            background-color: #e9ecef;
-        }
-    </style>
 </head>
 <body>
 
-<h1>Realizar Venta</h1>
+<div class="container">
+    <!-- Columna izquierda (lista de productos y formulario de código) -->
+    <div class="left-column">
+        <h1>Realizar Venta</h1>
 
-<!-- Formulario para ingresar código de producto -->
-<form id="form-venta" onsubmit="event.preventDefault(); agregarProductoPorCodigo(document.getElementById('codigo').value);">
-    <h2>Ingrese código de producto</h2>
-    <input type="text" id="codigo" placeholder="Código de producto" required>
-    <button type="submit">Agregar Producto</button>
-</form>
+        <!-- Formulario para ingresar código de producto -->
+        <form id="form-venta" onsubmit="event.preventDefault(); agregarProductoPorCodigo(document.getElementById('codigo').value);">
+            <h2>Ingrese código de producto</h2>
+            <input type="text" id="codigo" placeholder="Código de producto" required>
+            <button type="submit">Agregar Producto</button>
+        </form>
 
-<ul id="lista-productos">
-    <!-- Aquí se mostrarán los productos agregados -->
-</ul>
+        <!-- Títulos de las columnas -->
+        <div class="titulo-columnas">
+            <span>Artículo</span>
+            <span>Cantidad</span>
+        </div>
 
-<h3 id="total">Total: $0.00</h3>
+        <!-- Lista de productos -->
+        <ul id="lista-productos">
+            <!-- Aquí se mostrarán los productos agregados -->
+        </ul>
 
-<!-- Botones para procesar venta y buscar por descripción -->
-<button onclick="procesarVenta()">Realizar Venta</button>
-<button onclick="mostrarModal()">Buscar producto por descripción</button>
+        <!-- Total -->
+        <h3 id="total">Total: $0.00</h3>
+
+        <!-- Botones para procesar venta y buscar por descripción -->
+        <button onclick="procesarVenta()">Realizar Venta</button>
+        <button onclick="mostrarModal()">Buscar producto por descripción</button>
+    </div>
+
+    <!-- Columna derecha (futura funcionalidad) -->
+    <div class="right-column">
+        <h2>Funcionalidad adicional</h2>
+        <!-- Aquí puedes añadir el contenido para la nueva funcionalidad -->
+    </div>
+</div>
 
 <!-- Modal de búsqueda de productos por descripción -->
 <div id="modal-buscar" class="modal">
@@ -123,198 +61,10 @@
     </div>
 </div>
 
-<!-- Scripts en línea (JavaScript) -->
 <script>
-// Al cargar la página, establece el foco en el input de código
-window.onload = function() {
-    document.getElementById('codigo').focus();
-};
-
-let productosSeleccionados = [];
-
-// Función para agregar un producto por código
-function agregarProductoPorCodigo(codigo) {
-    fetch(`/buscar_producto?codigo=${codigo}`)
-        .then(response => response.json())
-        .then(producto => {
-            if (producto) {
-                const existe = productosSeleccionados.find(p => p.id === producto.id);
-                if (!existe) {
-                    producto.cantidad = 1;
-                    productosSeleccionados.push(producto);
-                } else {
-                    existe.cantidad += 1;
-                }
-                actualizarListaProductos();
-            } else {
-                alert("Producto no encontrado");
-            }
-            // Limpiar el input después de agregar el producto
-            document.getElementById('codigo').value = ''; // Limpiar el input
-            document.getElementById('codigo').focus(); // Volver a enfocar el input
-        })
-        .catch(error => {
-            console.error('Error al buscar el producto:', error);
-        });
-}
-
-function actualizarListaProductos() {
-    const lista = document.getElementById('lista-productos');
-    lista.innerHTML = '';
-    let total = 0;
-    productosSeleccionados.forEach(producto => {
-        total += producto.precio * producto.cantidad;
-        lista.innerHTML += `
-            <li style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                <span>${producto.nombre} - $${producto.precio} x </span>
-                <div style="display: flex; align-items: center;">
-                    <button onclick="actualizarCantidad(${producto.id}, ${producto.cantidad - 1})" style="padding: 5px;">&#x25BC;</button>
-                    <span style="padding: 0 10px;">${producto.cantidad}</span>
-                    <button onclick="actualizarCantidad(${producto.id}, ${producto.cantidad + 1})" style="padding: 5px;">&#x25B2;</button>
-                </div>
-                <button onclick="eliminarProducto(${producto.id})" style="margin-left: 10px;">Eliminar</button>
-            </li>
-        `;
-    });
-    document.getElementById('total').innerText = 'Total: $' + total.toFixed(2);
-}
-
-// Función para actualizar la cantidad de un producto
-function actualizarCantidad(id, nuevaCantidad) {
-    const producto = productosSeleccionados.find(p => p.id === id);
-    if (producto) {
-        producto.cantidad = parseInt(nuevaCantidad);
-        actualizarListaProductos();
-    }
-}
-
-// Función para eliminar un producto de la lista
-function eliminarProducto(id) {
-    productosSeleccionados = productosSeleccionados.filter(p => p.id !== id);
-    actualizarListaProductos();
-}
-
-// Función para mostrar el modal de búsqueda por descripción
-function mostrarModal() {
-    document.getElementById('modal-buscar').style.display = 'block';
-    document.getElementById('descripcion').value = '';  // Limpiar el input
-    document.getElementById('resultado-busqueda').innerHTML = '';  // Limpiar resultados
-    document.getElementById('descripcion').focus();  // Establecer el foco en el input del modal
-}
-
-// Función para cerrar el modal
-function cerrarModal() {
-    document.getElementById('modal-buscar').style.display = 'none';
-}
-let productosEncontrados = [];  // Para guardar los productos encontrados en la búsqueda
-let indiceSeleccionado = -1;  // Para seguir el índice del producto seleccionado
-
-// Función para buscar productos a medida que escribes en la ventana modal
-function buscarProductoPorDescripcion() {
-    const descripcion = document.getElementById('descripcion').value;
-    if (descripcion.length > 0) {
-        fetch(`/buscar_producto_descripcion?descripcion=${descripcion}`)
-            .then(response => response.json())
-            .then(productos => {
-                productosEncontrados = productos;
-                const resultados = document.getElementById('resultado-busqueda');
-                resultados.innerHTML = '';
-                productos.forEach((producto, index) => {
-                    const li = document.createElement('li');
-                    li.textContent = `${producto.nombre} - $${producto.precio}`;
-                    li.dataset.index = index;  // Guarda el índice del producto
-                    li.onclick = () => agregarProductoPorId(producto.id);
-                    resultados.appendChild(li);
-                });
-                indiceSeleccionado = -1;  // Reiniciar el índice
-            });
-    } else {
-        document.getElementById('resultado-busqueda').innerHTML = '';
-    }
-}
-
-// Función para manejar las teclas dentro del modal
-document.getElementById('descripcion').addEventListener('keydown', function(event) {
-    const resultados = document.getElementById('resultado-busqueda');
-    const items = resultados.getElementsByTagName('li');
-
-    if (event.key === 'ArrowDown') {
-        event.preventDefault();
-        if (indiceSeleccionado < items.length - 1) {
-            indiceSeleccionado++;
-            resaltarProductoSeleccionado(items);
-        }
-    } else if (event.key === 'ArrowUp') {
-        event.preventDefault();
-        if (indiceSeleccionado > 0) {
-            indiceSeleccionado--;
-            resaltarProductoSeleccionado(items);
-        }
-    } else if (event.key === 'Enter') {
-        event.preventDefault();
-        if (indiceSeleccionado >= 0 && indiceSeleccionado < productosEncontrados.length) {
-            agregarProductoPorId(productosEncontrados[indiceSeleccionado].id);
-        }
-    }
-});
-
-// Función para resaltar el producto seleccionado
-function resaltarProductoSeleccionado(items) {
-    for (let i = 0; i < items.length; i++) {
-        items[i].classList.remove('selected');
-    }
-    if (indiceSeleccionado >= 0 && indiceSeleccionado < items.length) {
-        items[indiceSeleccionado].classList.add('selected');
-    }
-}
-
-// Función para agregar un producto desde el modal a la factura
-function agregarProductoPorId(idProducto) {
-    fetch(`/buscar_producto_por_id?id=${idProducto}`)
-        .then(response => response.json())
-        .then(producto => {
-            if (producto) {
-                const existe = productosSeleccionados.find(p => p.id === producto.id);
-                if (!existe) {
-                    producto.cantidad = 1;
-                    productosSeleccionados.push(producto);
-                } else {
-                    existe.cantidad += 1;
-                }
-                actualizarListaProductos();
-            }
-            cerrarModal();
-        });
-}
-
-function procesarVenta() {
-    const idsProductos = productosSeleccionados.map(p => ({ id: p.id, cantidad: p.cantidad }));
-
-    fetch('{{ url_for('ventas.procesar_venta') }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ productos: idsProductos })  // Envía los productos como JSON
-    }).then(() => {
-        alert('Venta procesada con éxito');
-        window.location.reload();
-    }).catch((error) => {
-        console.error('Error procesando la venta:', error);
-    });
-}
-
-// Event listener for keydown events
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'F6') {  // Check if F6 is pressed
-        event.preventDefault(); // Prevent default action (if any)
-        mostrarModal();         // Call the function to show the modal
-    } else if (event.key === 'Escape') {  // Check if Escape is pressed
-        cerrarModal();         // Call the function to close the modal
-    }
-});
+    const urlProcesarVenta = "{{ url_for('ventas.procesar_venta') }}";
 </script>
-
+<script src="{{ url_for('static', filename='script-venta.js') }}"></script> <!-- Enlace al JS estático -->
 
 </body>
 </html>
