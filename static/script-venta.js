@@ -84,10 +84,10 @@ function buscarProductoPorDescripcion() {
         fetch(`/buscar_producto_descripcion?descripcion=${descripcion}`)
             .then(response => response.json())
             .then(productos => {
-                productosEncontrados = productos;
+                productosEncontrados = productos.slice(0, 15); // Limitar a 15 resultados
                 const resultados = document.getElementById('resultado-busqueda');
                 resultados.innerHTML = '';
-                productos.forEach((producto, index) => {
+                productosEncontrados.forEach((producto, index) => {
                     const li = document.createElement('li');
                     li.textContent = `${producto.nombre} - $${producto.precio}`;
                     li.dataset.index = index;
