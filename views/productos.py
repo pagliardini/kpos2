@@ -8,23 +8,33 @@ productos_bp = Blueprint('productos', __name__)
 @productos_bp.route('/productos', methods=['GET'])
 def listar_productos():
     productos = Producto.query.all()  # Obtener todos los productos de la base de datos
-    return render_template('productos.html', productos=productos)
+    marcas = Marca.query.all()  # Obtener todas las marcas
+    rubros = Rubro.query.all()  # Obtener todos los rubros
+    tipos = Tipo.query.all()  # Obtener todos los tipos
+    return render_template('productos.html', productos=productos, marcas=marcas, rubros=rubros, tipos=tipos)
 
-@productos_bp.route('/productos/agregar', methods=['POST'])
+
+@productos_bp.route('/agregar_producto', methods=['POST'])
 def agregar_producto():
-    nombre = request.form['nombre']
-    precio = request.form['precio']
     codigo = request.form['codigo']
-    marca_id = request.form['marca_id']
-    rubro_id = request.form['rubro_id']
-    tipo_id = request.form['tipo_id']
 
-    nuevo_producto = Producto(nombre=nombre, precio=precio, codigo1=codigo,
-                              marca_id=marca_id, rubro_id=rubro_id, tipo_id=tipo_id)
+
+
+    # Si no existe, procede a agregar el producto
+    nuevo_producto = Producto(
+        nombre=request.form['nombre'],
+        precio=request.form['precio'],
+        codigo1=codigo,
+        marca_id=request.form['marca_id'],
+        rubro_id=request.form['rubro_id'],
+        tipo_id=request.form['tipo_id']
+    )
     db.session.add(nuevo_producto)
     db.session.commit()
-    flash('Producto agregado exitosamente')
+
+    flash('Producto agregado exitosamente!', 'success')
     return redirect(url_for('productos.listar_productos'))
+
 
 @productos_bp.route('/productos/editar/<int:id>', methods=['GET', 'POST'])
 def editar_producto(id):
@@ -146,3 +156,4 @@ def eliminar_tipo(id):
     db.session.commit()
     flash('Tipo eliminado exitosamente')
     return redirect(url_for('productos.listar_tipos'))
+
