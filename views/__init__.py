@@ -3,6 +3,7 @@ from config import Config
 from extensions import db
 from views.ventas import ventas_bp
 from views.productos import productos_bp
+from views.compras import compras_bp
 
 
 def create_app():

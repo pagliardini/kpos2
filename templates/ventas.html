@@ -4,70 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ventas</title>
-
-    <!-- Vinculamos el archivo CSS externo -->
     <link rel="stylesheet" href="{{ url_for('static', filename='/ventas/styles-venta.css') }}">
-
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-gray-100">
 
-<div class="container">
-    <!-- Columna izquierda (lista de productos y formulario de código) -->
-    <div class="left-column">
-        <h1>Realizar Venta</h1>
+    <!-- Incluyendo la navbar -->
+    {% include 'navbar.html' %}
 
-        <!-- Formulario para ingresar código de producto -->
-        <form id="form-venta" onsubmit="event.preventDefault(); agregarProductoPorCodigo(document.getElementById('codigo').value);">
-            <h2>Ingrese código de producto</h2>
-            <input type="text" id="codigo" placeholder="Código de producto" required>
-            <button type="submit">Agregar Producto</button>
-        </form>
+    <div class="container mx-auto p-4 flex">
+        <div class="left-column w-3/5 mr-4 bg-white shadow-md rounded-lg p-4">
+            <h1 class="text-2xl font-semibold mb-4">Realizar Venta</h1>
 
-        <!-- Títulos de las columnas -->
-        <div class="titulo-columnas">
-            <span>Artículo</span>
-            <span>Cantidad</span>
+            <form id="form-venta" onsubmit="event.preventDefault(); agregarProductoPorCodigo(document.getElementById('codigo').value);">
+                <h2 class="text-lg mb-2">Ingrese código de producto</h2>
+                <input type="text" id="codigo" placeholder="Código de producto" required class="border border-gray-300 rounded p-2 mb-4 w-full">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition duration-300">Agregar Producto</button>
+            </form>
+
+            <div class="titulo-columnas mb-2">
+                <span class="font-semibold">Artículo</span>
+                <span class="font-semibold">Cantidad</span>
+            </div>
+
+            <ul id="lista-productos" class="mb-4">
+                <!-- Aquí se mostrarán los productos agregados -->
+            </ul>
+
+            <h3 id="total" class="text-xl font-bold">Total: $0.00</h3>
+
+            <div class="mt-4">
+                <button onclick="procesarVenta()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-500 transition duration-300">Realizar Venta</button>
+                <button onclick="mostrarModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition duration-300">Buscar producto por descripción</button>
+            </div>
         </div>
 
-        <!-- Lista de productos -->
-        <ul id="lista-productos">
-            <!-- Aquí se mostrarán los productos agregados -->
-        </ul>
-
-        <!-- Total -->
-        <h3 id="total">Total: $0.00</h3>
-
-        <!-- Botones para procesar venta y buscar por descripción -->
-        <button onclick="procesarVenta()">Realizar Venta</button>
-        <button onclick="mostrarModal()">Buscar producto por descripción</button>
+        <div class="right-column w-2/5 bg-white shadow-md rounded-lg p-4">
+            <h2 class="text-lg font-semibold mb-4">Funcionalidad adicional</h2>
+            <!-- Aquí puedes añadir el contenido para la nueva funcionalidad -->
+        </div>
     </div>
 
-    <!-- Columna derecha (futura funcionalidad) -->
-    <div class="right-column">
-        <h2>Funcionalidad adicional</h2>
-        <!-- Aquí puedes añadir el contenido para la nueva funcionalidad -->
+    <div id="modal-buscar" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <h2>Buscar Producto por Descripción</h2>
+            <input type="text" id="descripcion" placeholder="Escribe para buscar..." oninput="buscarProductoPorDescripcion()" onkeydown="manejarTeclasNavegacion(event)" autocomplete="off" class="border border-gray-300 rounded p-2 mb-4 w-full">
+            <ul id="resultado-busqueda">
+                <!-- Aquí se mostrarán los resultados de búsqueda -->
+            </ul>
+        </div>
     </div>
-</div>
 
-<!-- Modal de búsqueda de productos por descripción -->
-<div id="modal-buscar" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="cerrarModal()">&times;</span>
-        <h2>Buscar Producto por Descripción</h2>
-        <input type="text" id="descripcion" placeholder="Escribe para buscar..." oninput="buscarProductoPorDescripcion()" onkeydown="manejarTeclasNavegacion(event)" autocomplete="off">
-        <ul id="resultado-busqueda">
-            <!-- Aquí se mostrarán los resultados de búsqueda -->
-        </ul>
-    </div>
-</div>
-
-<script>
-    const urlProcesarVenta = "{{ url_for('ventas.procesar_venta') }}";
-</script>
-<script src="{{ url_for('static', filename='ventas/app-focus.js') }}"></script>
-<script src="{{ url_for('static', filename='ventas/productos.js') }}"></script>
-<script src="{{ url_for('static', filename='ventas/modal.js') }}"></script>
-<script src="{{ url_for('static', filename='ventas/venta.js') }}"></script>
+    <script>
+        const urlProcesarVenta = "{{ url_for('ventas.procesar_venta') }}";
+    </script>
+    <script src="{{ url_for('static', filename='ventas/app-focus.js') }}"></script>
+    <script src="{{ url_for('static', filename='ventas/productos.js') }}"></script>
+    <script src="{{ url_for('static', filename='ventas/modal.js') }}"></script>
+    <script src="{{ url_for('static', filename='ventas/venta.js') }}"></script>
 
 </body>
 </html>

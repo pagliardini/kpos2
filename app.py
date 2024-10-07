@@ -4,7 +4,8 @@ from extensions import db
 from views.ventas import ventas_bp
 from views.productos import productos_bp
 from views.principal import principal_bp
-
+from views.compras import compras_bp
+from views.caja import caja_bp
 
 
 def create_app():
@@ -19,6 +20,9 @@ def create_app():
     app.register_blueprint(ventas_bp)
     app.register_blueprint(productos_bp)
     app.register_blueprint(principal_bp)
+    app.register_blueprint(compras_bp)
+    app.register_blueprint(caja_bp)
+
     return app
 
 
