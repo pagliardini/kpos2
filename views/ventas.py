@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from models.producto import Producto
-from models.factura import Factura
+from models.factura import Factura, FacturaDetalle
 from extensions import db
 import json
 
@@ -18,12 +18,15 @@ def ventas():
 @ventas_bp.route('/procesar_venta', methods=['POST'])
 def procesar_venta():
     # Obtener JSON enviado en el cuerpo de la petición
-    data = request.get_json()  # Obtener el JSON directamente
+    data = request.get_json()
 
-    productos = data.get('productos', [])  # Obtener la lista de productos
-
+    productos = data.get('productos', [])
     total_venta = 0
+
     if productos:
+        detalles_factura = []
+
+        # Calcular el total y preparar los detalles de la venta
         for producto_data in productos:
             id_producto = producto_data.get('id')
             cantidad = producto_data.get('cantidad', 1)
@@ -31,16 +34,31 @@ def procesar_venta():
             producto = Producto.query.get(id_producto)  # Buscar el producto por ID
             if producto and producto.precio:
                 total_venta += float(producto.precio) * int(cantidad)
+
+                # Crear el detalle de la factura
+                detalle = FacturaDetalle(
+                    producto_id=producto.id,
+                    cantidad=cantidad,
+                    precio_unitario=producto.precio
+                )
+                detalles_factura.append(detalle)
             else:
                 print(f"Producto con ID {id_producto} no encontrado o sin precio")
 
         print(f"Total de la venta calculado: {total_venta}")
 
-        # Crear la nueva factura si el total es mayor a 0
+        # Crear la nueva factura y agregar los detalles
         if total_venta > 0:
             nueva_factura = Factura(total=total_venta)
             db.session.add(nueva_factura)
-            db.session.commit()
+            db.session.commit()  # Necesario para generar el ID de la factura
+
+            # Asignar los detalles de la factura a la factura recién creada
+            for detalle in detalles_factura:
+                detalle.factura_id = nueva_factura.id
+                db.session.add(detalle)
+
+            db.session.commit()  # Guardar los detalles en la base de datos
 
     return redirect(url_for('ventas.ventas'))
 @ventas_bp.route('/buscar_producto')
