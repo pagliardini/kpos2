@@ -6,7 +6,7 @@
     <title>Ventas</title>
 
     <!-- Vinculamos el archivo CSS externo -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles-venta.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/ventas/styles-venta.css') }}">
 
 </head>
 <body>
@@ -64,7 +64,10 @@
 <script>
     const urlProcesarVenta = "{{ url_for('ventas.procesar_venta') }}";
 </script>
-<script src="{{ url_for('static', filename='script-venta.js') }}"></script> <!-- Enlace al JS estático -->
+<script src="{{ url_for('static', filename='ventas/app-focus.js') }}"></script>
+<script src="{{ url_for('static', filename='ventas/productos.js') }}"></script>
+<script src="{{ url_for('static', filename='ventas/modal.js') }}"></script>
+<script src="{{ url_for('static', filename='ventas/venta.js') }}"></script>
 
 </body>
 </html>
