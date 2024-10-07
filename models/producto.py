@@ -32,6 +32,6 @@ class Producto(db.Model):
     codigo1 = db.Column(db.String(50), nullable=False)
 
     # Claves foráneas para relacionar Producto con Marca, Rubro y Tipo
-    marca_id = db.Column(db.Integer, db.ForeignKey('marcas.id'), nullable=False)
-    rubro_id = db.Column(db.Integer, db.ForeignKey('rubros.id'), nullable=False)
-    tipo_id = db.Column(db.Integer, db.ForeignKey('tipos.id'), nullable=False)
+    marca_id = db.Column(db.Integer, db.ForeignKey('marcas.id', ondelete='SET NULL'), nullable=True)
+    rubro_id = db.Column(db.Integer, db.ForeignKey('rubros.id', ondelete='SET NULL'), nullable=True)
+    tipo_id = db.Column(db.Integer, db.ForeignKey('tipos.id', ondelete='SET NULL'), nullable=True)

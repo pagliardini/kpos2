@@ -37,12 +37,7 @@ INSERT INTO Productos (nombre, precio, codigo1, marca_id, rubro_id, tipo_id) VAL
 ''')
 
 # Insertar datos de ejemplo en la tabla Facturas_Detalles
-sqlite_cursor.execute('''
-INSERT INTO Facturas_Detalles (factura_id, producto_id, cantidad, precio_unitario) VALUES 
-(1, 1, 2, 100.50),
-(1, 2, 1, 200.00),
-(2, 1, 1, 100.50)
-''')
+
 
 # Guardar cambios y cerrar conexión
 sqlite_conn.commit()

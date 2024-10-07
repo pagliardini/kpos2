@@ -31,13 +31,15 @@ def procesar_venta():
             id_producto = producto_data.get('id')
             cantidad = producto_data.get('cantidad', 1)
 
-            producto = Producto.query.get(id_producto)  # Buscar el producto por ID
+            # Buscar el producto por ID
+            producto = Producto.query.get(id_producto)
             if producto and producto.precio:
                 total_venta += float(producto.precio) * int(cantidad)
 
-                # Crear el detalle de la factura
+                # Crear el detalle de la factura con el nombre del producto
                 detalle = FacturaDetalle(
                     producto_id=producto.id,
+                    producto_nombre=producto.nombre,  # Registrar el nombre del producto
                     cantidad=cantidad,
                     precio_unitario=producto.precio
                 )
@@ -61,6 +63,7 @@ def procesar_venta():
             db.session.commit()  # Guardar los detalles en la base de datos
 
     return redirect(url_for('ventas.ventas'))
+
 @ventas_bp.route('/buscar_producto')
 def buscar_producto():
     codigo = request.args.get('codigo')

@@ -4,7 +4,6 @@ from extensions import db
 from views.ventas import ventas_bp
 from views.productos import productos_bp
 from views.principal import principal_bp
-from flask_wtf.csrf import CSRFProtect
 
 
 
