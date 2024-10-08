@@ -23,6 +23,16 @@ def listar_productos():
     return render_template('productos.html', productos=productos, marcas=marcas, rubros=rubros, tipos=tipos)
 
 
+@productos_bp.route('/api/productos', methods=['GET'])
+def listar_productos_api():
+    productos = Producto.query.all()
+
+    # Retornar la lista de productos en formato JSON
+    return jsonify({
+        'productos': [producto.to_dict() for producto in productos]
+    }), 200  # 200 OK
+
+
 @productos_bp.route('/agregar_producto', methods=['POST'])
 def agregar_producto():
     codigo = request.form.get('codigo')
