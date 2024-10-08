@@ -8,6 +8,9 @@ class Marca(db.Model):
     # Relación uno a muchos con Producto
     productos = db.relationship('Producto', backref='marca', lazy=True)
 
+    def to_dict(self):
+        return {col.name: getattr(self, col.name) for col in self.__table__.columns}
+
 class Rubro(db.Model):
     __tablename__ = 'rubros'
     id = db.Column(db.Integer, primary_key=True)
@@ -16,6 +19,9 @@ class Rubro(db.Model):
     # Relación uno a muchos con Producto
     productos = db.relationship('Producto', backref='rubro', lazy=True)
 
+    def to_dict(self):
+        return {col.name: getattr(self, col.name) for col in self.__table__.columns}
+
 class Tipo(db.Model):
     __tablename__ = 'tipos'
     id = db.Column(db.Integer, primary_key=True)
@@ -23,6 +29,10 @@ class Tipo(db.Model):
 
     # Relación uno a muchos con Producto
     productos = db.relationship('Producto', backref='tipo', lazy=True)
+
+    def to_dict(self):
+        return {col.name: getattr(self, col.name) for col in self.__table__.columns}
+
 
 class Producto(db.Model):
     __tablename__ = 'productos'
@@ -35,3 +45,7 @@ class Producto(db.Model):
     marca_id = db.Column(db.Integer, db.ForeignKey('marcas.id', ondelete='SET NULL'), nullable=True)
     rubro_id = db.Column(db.Integer, db.ForeignKey('rubros.id', ondelete='SET NULL'), nullable=True)
     tipo_id = db.Column(db.Integer, db.ForeignKey('tipos.id', ondelete='SET NULL'), nullable=True)
+
+    # Método para serializar a un diccionario
+    def to_dict(self):
+        return {col.name: getattr(self, col.name) for col in self.__table__.columns}
