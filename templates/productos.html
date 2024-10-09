@@ -69,6 +69,8 @@
                         <th class="py-2 px-4 border-b">ID</th>
                         <th class="py-2 px-4 border-b">Nombre</th>
                         <th class="py-2 px-4 border-b">Precio</th>
+                        <th class="py-2 px-4 border-b">Stock</th>
+
                         <th class="py-2 px-4 border-b">Acciones</th>
                     </tr>
                 </thead>
@@ -78,6 +80,7 @@
                         <td class="py-2 px-4 border-b">{{ producto.id }}</td>
                         <td class="py-2 px-4 border-b">{{ producto.nombre }}</td>
                         <td class="py-2 px-4 border-b">${{ producto.precio }}</td>
+                        <td class="py-2 px-4 border-b">{{ producto.stock }}</td>
                         <td class="py-2 px-4 border-b">
                             <a href="{{ url_for('productos.editar_producto', id=producto.id) }}" class="text-blue-500 hover:underline">Editar</a>
                             <form action="{{ url_for('productos.eliminar_producto', id=producto.id) }}" method="POST" style="display:inline;">

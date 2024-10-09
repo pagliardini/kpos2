@@ -46,6 +46,9 @@ class Producto(db.Model):
     rubro_id = db.Column(db.Integer, db.ForeignKey('rubros.id', ondelete='SET NULL'), nullable=True)
     tipo_id = db.Column(db.Integer, db.ForeignKey('tipos.id', ondelete='SET NULL'), nullable=True)
 
+    # Columna para manejar el stock (no nullable)
+    stock = db.Column(db.Integer, nullable=False, default=0)
+
     # Método para serializar a un diccionario
     def to_dict(self):
         return {col.name: getattr(self, col.name) for col in self.__table__.columns}
