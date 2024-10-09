@@ -47,6 +47,7 @@ def agregar_producto():
     nuevo_producto = Producto(
         nombre=request.form.get('nombre'),
         precio=request.form.get('precio'),
+        costo=request.form.get('costo'),
         codigo1=codigo,
         marca_id=request.form.get('marca_id'),
         rubro_id=request.form.get('rubro_id'),

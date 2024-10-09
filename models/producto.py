@@ -38,16 +38,19 @@ class Producto(db.Model):
     __tablename__ = 'productos'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
+    costo = db.Column(db.Float, nullable=False, default=0.0)
     precio = db.Column(db.Float, nullable=False)
     codigo1 = db.Column(db.String(50), nullable=False)
+    # Columna para manejar el stock (no nullable)
+    stock = db.Column(db.Integer, nullable=False, default=0)
+
 
     # Claves foráneas para relacionar Producto con Marca, Rubro y Tipo
     marca_id = db.Column(db.Integer, db.ForeignKey('marcas.id', ondelete='SET NULL'), nullable=True)
     rubro_id = db.Column(db.Integer, db.ForeignKey('rubros.id', ondelete='SET NULL'), nullable=True)
     tipo_id = db.Column(db.Integer, db.ForeignKey('tipos.id', ondelete='SET NULL'), nullable=True)
 
-    # Columna para manejar el stock (no nullable)
-    stock = db.Column(db.Integer, nullable=False, default=0)
+
 
     # Método para serializar a un diccionario
     def to_dict(self):

@@ -29,6 +29,7 @@
             <h2 class="text-2xl font-semibold mb-4">Agregar Producto</h2>
             <form action="{{ url_for('productos.agregar_producto') }}" method="POST" class="mb-6">
                 <input type="text" name="nombre" placeholder="Nombre del producto" required class="border border-gray-300 p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="number" name="costo" placeholder="Precio de costo" required class="border border-gray-300 p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <input type="number" name="precio" placeholder="Precio del producto" required class="border border-gray-300 p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <input type="text" id="codigoInput" name="codigo" placeholder="Código de barras" required class="border border-gray-300 p-2 rounded w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
 
@@ -68,6 +69,7 @@
                     <tr class="bg-gray-200">
                         <th class="py-2 px-4 border-b">ID</th>
                         <th class="py-2 px-4 border-b">Nombre</th>
+                        <th class="py-2 px-4 border-b">Costo</th>
                         <th class="py-2 px-4 border-b">Precio</th>
                         <th class="py-2 px-4 border-b">Stock</th>
 
@@ -79,6 +81,7 @@
                     <tr class="{% if loop.index is even %}bg-gray-100{% else %}bg-white{% endif %}">
                         <td class="py-2 px-4 border-b">{{ producto.id }}</td>
                         <td class="py-2 px-4 border-b">{{ producto.nombre }}</td>
+                        <td class="py-2 px-4 border-b">${{ producto.costo }}</td>
                         <td class="py-2 px-4 border-b">${{ producto.precio }}</td>
                         <td class="py-2 px-4 border-b">{{ producto.stock }}</td>
                         <td class="py-2 px-4 border-b">
