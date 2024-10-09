@@ -34,16 +34,21 @@ def procesar_venta():
             # Buscar el producto por ID
             producto = Producto.query.get(id_producto)
             if producto and producto.precio:
+                # Calcular el total de la venta
                 total_venta += float(producto.precio) * int(cantidad)
 
                 # Crear el detalle de la factura con el nombre del producto
                 detalle = FacturaDetalle(
                     producto_id=producto.id,
-                    producto_nombre=producto.nombre,  # Registrar el nombre del producto
+                    producto_nombre=producto.nombre,
                     cantidad=cantidad,
                     precio_unitario=producto.precio
                 )
                 detalles_factura.append(detalle)
+
+                # Descontar el stock del producto, permitiendo que sea negativo
+                producto.stock -= cantidad
+
             else:
                 print(f"Producto con ID {id_producto} no encontrado o sin precio")
 
