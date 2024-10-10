@@ -1,0 +1,12 @@
+_Productos
+    * Implementar carga de productos con archivo xls
+    * Implementar exportacion de lista de productos a xls
+_Ventas
+    Backend
+        * Al realizar venta en negativo no suma al stock
+        * Tampoco ingresa la factura en venta en negativo
+        * Implementar gestion de clientes
+    Frontend
+        * Implementar navegacion en factura
+_Compras
+_Caja
