@@ -16,6 +16,7 @@
             }
         }
     </script>
+
 </head>
 <body class="bg-gray-100 h-screen">
 
@@ -61,41 +62,41 @@
             </form>
         </div>
 
-        <!-- Contenedor de productos con desplazamiento interno (2/3) -->
-        <div class="col-span-2 bg-white shadow-md rounded-lg p-4 overflow-y-auto h-96">
-            <h2 class="text-2xl font-semibold mb-4">Productos Existentes</h2>
-            <table class="min-w-full bg-white border border-gray-300">
-                <thead>
-                    <tr class="bg-gray-200">
-                        <th class="py-2 px-4 border-b">ID</th>
-                        <th class="py-2 px-4 border-b">Nombre</th>
-                        <th class="py-2 px-4 border-b">Costo</th>
-                        <th class="py-2 px-4 border-b">Precio</th>
-                        <th class="py-2 px-4 border-b">Stock</th>
-
-                        <th class="py-2 px-4 border-b">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for producto in productos %}
-                    <tr class="{% if loop.index is even %}bg-gray-100{% else %}bg-white{% endif %}">
-                        <td class="py-2 px-4 border-b">{{ producto.id }}</td>
-                        <td class="py-2 px-4 border-b">{{ producto.nombre }}</td>
-                        <td class="py-2 px-4 border-b">${{ producto.costo }}</td>
-                        <td class="py-2 px-4 border-b">${{ producto.precio }}</td>
-                        <td class="py-2 px-4 border-b">{{ producto.stock }}</td>
-                        <td class="py-2 px-4 border-b">
-                            <a href="{{ url_for('productos.editar_producto', id=producto.id) }}" class="text-blue-500 hover:underline">Editar</a>
-                            <form action="{{ url_for('productos.eliminar_producto', id=producto.id) }}" method="POST" style="display:inline;">
-                                <button type="submit" class="text-red-500 hover:underline ml-4">Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+<!-- Contenedor de productos con desplazamiento interno (2/3) -->
+<div class="col-span-2 bg-white shadow-md rounded-lg p-0 h-96" style="overflow: hidden;">
+    <h2 class="text-2xl font-semibold mb-4">Productos Existentes</h2>
+    <div class="table-container overflow-y-auto" style="max-height: 100%;">
+        <table class="min-w-full bg-white border border-gray-300">
+            <thead class="bg-gray-200">
+            <tr>
+                <th class="py-2 px-20 border-b sticky top-0 bg-gray-200 pl-0">Codigo</th>
+                <th class="py-2 px-20 border-b sticky top-0 bg-gray-200 pl-0">Nombre</th>
+                <th class="py-2 px-20 border-b sticky top-0 bg-gray-200 pl-0">Costo</th>
+                <th class="py-2 px-20 border-b sticky top-0 bg-gray-200 pl-0">Precio</th>
+                <th class="py-2 px-20 border-b sticky top-0 bg-gray-200 pl-0">Stock</th>
+                <th class="py-2 px-20 border-b sticky top-0 bg-gray-200 pl-0">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                <tr class="{% if loop.index is even %}bg-gray-100{% else %}bg-white{% endif %}">
+                    <td class="py-2 px-1 border-b">{{ producto.codigo1 }}</td>
+                    <td class="py-2 px-1 border-b">{{ producto.nombre }}</td>
+                    <td class="py-2 px-1 border-b">${{ producto.costo }}</td>
+                    <td class="py-2 px-1 border-b">${{ producto.precio }}</td>
+                    <td class="py-2 px-1 border-b">{{ producto.stock }}</td>
+                    <td class="py-2 px-1 border-b">
+                        <a href="{{ url_for('productos.editar_producto', id=producto.id) }}" class="text-blue-500 hover:underline">Editar</a>
+                        <form action="{{ url_for('productos.eliminar_producto', id=producto.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="text-red-500 hover:underline ml-4">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+</div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
