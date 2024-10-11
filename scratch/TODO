@@ -1,6 +1,9 @@
 _Productos
-    * Implementar carga de productos con archivo xls
-    * Implementar exportacion de lista de productos a xls
+    Backend
+        * Implementar carga de productos con archivo xls
+        * Implementar exportacion de lista de productos a xls
+   Frontend
+        * Ultimo producto creado no es mostrado en lista de productos
 _Ventas
     Backend
         * Al realizar venta en negativo no suma al stock
