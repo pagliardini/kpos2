@@ -31,6 +31,9 @@ def procesar_venta():
             id_producto = producto_data.get('id')
             cantidad = producto_data.get('cantidad', 1)
 
+            # Imprimir para verificar las cantidades recibidas
+            print(f"Producto ID: {id_producto}, Cantidad recibida: {cantidad}")
+
             # Buscar el producto por ID
             producto = Producto.query.get(id_producto)
             if producto and producto.precio:
@@ -46,26 +49,33 @@ def procesar_venta():
                 )
                 detalles_factura.append(detalle)
 
-                # Descontar el stock del producto, permitiendo que sea negativo
-                producto.stock -= cantidad
+                # Si la cantidad es negativa, sumar al stock
+                if cantidad < 0:
+                    print(f"Cantidad negativa detectada para {producto.nombre}: {cantidad}. Sumando al stock.")
+                    producto.stock += abs(cantidad)
+                else:
+                    # Descontar del stock si es positiva
+                    producto.stock -= cantidad
+
+                # Guardar los cambios del stock en la base de datos
+                db.session.commit()
 
             else:
                 print(f"Producto con ID {id_producto} no encontrado o sin precio")
 
         print(f"Total de la venta calculado: {total_venta}")
 
-        # Crear la nueva factura y agregar los detalles
-        if total_venta > 0:
-            nueva_factura = Factura(total=total_venta)
-            db.session.add(nueva_factura)
-            db.session.commit()  # Necesario para generar el ID de la factura
+        # Crear la nueva factura y agregar los detalles, independientemente de si el total es positivo o negativo
+        nueva_factura = Factura(total=total_venta)
+        db.session.add(nueva_factura)
+        db.session.commit()  # Necesario para generar el ID de la factura
 
-            # Asignar los detalles de la factura a la factura recién creada
-            for detalle in detalles_factura:
-                detalle.factura_id = nueva_factura.id
-                db.session.add(detalle)
+        # Asignar los detalles de la factura a la factura recién creada
+        for detalle in detalles_factura:
+            detalle.factura_id = nueva_factura.id
+            db.session.add(detalle)
 
-            db.session.commit()  # Guardar los detalles en la base de datos
+        db.session.commit()  # Guardar los detalles en la base de datos
 
     return redirect(url_for('ventas.ventas'))
 

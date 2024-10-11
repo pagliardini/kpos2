@@ -1,6 +1,7 @@
 // venta.js
 function procesarVenta() {
     const idsProductos = productosSeleccionados.map(p => ({ id: p.id, cantidad: p.cantidad }));
+    console.log("Productos enviados para la venta:", idsProductos);  // Log para verificar cantidades
 
     fetch(urlProcesarVenta, {
         method: 'POST',

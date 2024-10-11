@@ -6,10 +6,12 @@ _Productos
         * Ultimo producto creado no es mostrado en lista de productos
 _Ventas
     Backend
-        * Al realizar venta en negativo no suma al stock
-        * Tampoco ingresa la factura en venta en negativo
+        * Al realizar venta en negativo no suma al stock // hecho
+        * Tampoco ingresa la factura en venta en negativo // hecho
         * Implementar gestion de clientes
     Frontend
         * Implementar navegacion en factura
+        * Corregir factura muestra el id en columna codigo (deberia mostrar codigo1)
 _Compras
 _Caja
+

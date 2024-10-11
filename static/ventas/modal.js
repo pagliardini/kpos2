@@ -84,5 +84,6 @@ function agregarProductoPorId(idProducto) {
                 actualizarListaProductos();
             }
             cerrarModal();
+            document.getElementById('codigo').focus();  // Vuelve a enfocar el campo de código
         });
 }
