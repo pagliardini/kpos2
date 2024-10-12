@@ -10,8 +10,7 @@ ventas_bp = Blueprint('ventas', __name__)
 # Ruta para mostrar los productos
 @ventas_bp.route('/ventas')
 def ventas():
-    productos = Producto.query.all()  # Obtener todos los productos
-    return render_template('ventas.html', productos=productos)
+    return render_template('ventas.html')
 
 
 # Ruta para procesar la venta
