@@ -4,6 +4,7 @@ from extensions import db
 
 productos_bp = Blueprint('productos', __name__)
 
+
 @productos_bp.route('/productos', methods=['GET'])
 def listar_productos():
     productos = Producto.query.all()
@@ -137,4 +138,3 @@ def eliminar_producto_api(id):
     db.session.commit()
 
     return {'message': 'Producto eliminado exitosamente'}, 200
-
