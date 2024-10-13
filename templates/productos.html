@@ -1,115 +1,130 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Productos</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        clifford: '#da373d',
-                    }
-                }
-            }
-        }
-    </script>
+{% extends 'base.html' %}
 
-</head>
-<body class="bg-gray-100 h-screen">
+{% block title %}Lista de Productos{% endblock %}
 
-    <!-- Incluye tu navbar aquí -->
-    {% include 'navbar.html' %}
+{% block content %}
+<h2 class="text-2xl mb-4 font-semibold">Productos</h2>
 
-    <!-- Contenedor principal con diseño de cuadrícula -->
-    <div class="grid grid-cols-3 gap-6 p-6">
-        <!-- Contenedor de formulario para agregar productos (1/3) -->
-        <div class="col-span-1 bg-white shadow-md rounded-lg p-4">
-            <h2 class="text-2xl font-semibold mb-4">Agregar Producto</h2>
-            <form action="{{ url_for('productos.agregar_producto') }}" method="POST" class="mb-6">
-                <input type="text" name="nombre" placeholder="Nombre del producto" required class="border border-gray-300 p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <input type="number" name="costo" placeholder="Precio de costo" required class="border border-gray-300 p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <input type="number" name="precio" placeholder="Precio del producto" required class="border border-gray-300 p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <input type="text" id="codigoInput" name="codigo" placeholder="Código de barras" required class="border border-gray-300 p-2 rounded w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
 
-                <!-- Selección de Marca -->
-                <label for="marca_id" class="block mb-1">Marca</label>
-                <select name="marca_id" id="marca_id" required class="border border-gray-300 p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    {% for marca in marcas %}
-                        <option value="{{ marca.id }}">{{ marca.nombre }}</option>
-                    {% endfor %}
-                </select>
 
-                <!-- Selección de Rubro -->
-                <label for="rubro_id" class="block mb-1">Rubro</label>
-                <select name="rubro_id" id="rubro_id" required class="border border-gray-300 p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    {% for rubro in rubros %}
-                        <option value="{{ rubro.id }}">{{ rubro.nombre }}</option>
-                    {% endfor %}
-                </select>
+<!-- Contenedor principal con diseño de cuadrícula -->
+<div class="grid grid-cols-3 gap-6 p-1">
+    <!-- Contenedor de formulario para agregar productos (1/3) -->
+    <div class="col-span-1 bg-white shadow-md rounded-lg p-4">
+        <h2 class="text-2xl font-semibold mb-4">Agregar Producto</h2>
+        <form action="{{ url_for('productos.agregar_producto') }}" method="POST" class="mb-6">
+            <label class="input input-bordered flex items-center gap-2 mb-2">
+                <input type="text" name="nombre" placeholder="Nombre del producto" required class="grow" />
+                <i class="bi bi-box-fill h-4 w-4 opacity-70"></i> <!-- Icono de "Nombre" -->
+            </label>
 
-                <!-- Selección de Tipo -->
-                <label for="tipo_id" class="block mb-1">Tipo</label>
-                <select name="tipo_id" id="tipo_id" required class="border border-gray-300 p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    {% for tipo in tipos %}
-                        <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
-                    {% endfor %}
-                </select>
+            <label class="input input-bordered flex items-center gap-2 mb-2">
+                <input type="number" name="costo" placeholder="Precio de costo" required class="grow" />
+                <i class="bi bi-cash h-4 w-4 opacity-70"></i> <!-- Icono de "Costo" -->
+            </label>
 
-                <button type="submit" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition">Agregar Producto</button>
-            </form>
-        </div>
+            <label class="input input-bordered flex items-center gap-2 mb-2">
+                <input type="number" name="precio" placeholder="Precio del producto" required class="grow" />
+                <i class="bi bi-cash h-4 w-4 opacity-70"></i> <!-- Icono de "Precio" -->
+            </label>
 
-<!-- Contenedor de productos con desplazamiento interno (2/3) -->
-<div class="col-span-2 bg-white shadow-md rounded-lg p-0 h-96" style="overflow: hidden;">
-    <h2 class="text-2xl font-semibold mb-4">Productos Existentes</h2>
-    <div class="table-container overflow-y-auto" style="max-height: 100%;">
-        <table class="min-w-full bg-white border border-gray-300">
-            <thead class="bg-gray-200">
-            <tr>
-                <th class="py-2 px-20 border-b sticky top-0 bg-gray-200 pl-0">Codigo</th>
-                <th class="py-2 px-20 border-b sticky top-0 bg-gray-200 pl-0">Nombre</th>
-                <th class="py-2 px-20 border-b sticky top-0 bg-gray-200 pl-0">Costo</th>
-                <th class="py-2 px-20 border-b sticky top-0 bg-gray-200 pl-0">Precio</th>
-                <th class="py-2 px-20 border-b sticky top-0 bg-gray-200 pl-0">Stock</th>
-                <th class="py-2 px-20 border-b sticky top-0 bg-gray-200 pl-0">Acciones</th>
-            </tr>
-            </thead>
-            <tbody>
-                {% for producto in productos %}
-                <tr class="{% if loop.index is even %}bg-gray-100{% else %}bg-white{% endif %}">
-                    <td class="py-2 px-1 border-b">{{ producto.codigo1 }}</td>
-                    <td class="py-2 px-1 border-b">{{ producto.nombre }}</td>
-                    <td class="py-2 px-1 border-b">${{ producto.costo }}</td>
-                    <td class="py-2 px-1 border-b">${{ producto.precio }}</td>
-                    <td class="py-2 px-1 border-b">{{ producto.stock }}</td>
-                    <td class="py-2 px-1 border-b">
-                        <a href="{{ url_for('productos.editar_producto', id=producto.id) }}" class="text-blue-500 hover:underline">Editar</a>
-                        <form action="{{ url_for('productos.eliminar_producto', id=producto.id) }}" method="POST" style="display:inline;">
-                            <button type="submit" class="text-red-500 hover:underline ml-4">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
+            <label class="input input-bordered flex items-center gap-2 mb-2">
+                <input type="text" id="codigoInput" name="codigo" placeholder="Código de barras" required class="grow" />
+                <i class="bi bi-barcode h-4 w-4 opacity-70"></i> <!-- Icono de "Código de barras" -->
+            </label>
+
+            <!-- Selección de Marca -->
+            <label for="marca_id" class="block mb-1">Marca</label>
+            <select name="marca_id" id="marca_id" required class="input input-bordered w-full mb-2">
+                {% for marca in marcas %}
+                    <option value="{{ marca.id }}">{{ marca.nombre }}</option>
                 {% endfor %}
-            </tbody>
-        </table>
+            </select>
+
+            <!-- Selección de Rubro -->
+            <label for="rubro_id" class="block mb-1">Rubro</label>
+            <select name="rubro_id" id="rubro_id" required class="input input-bordered w-full mb-2">
+                {% for rubro in rubros %}
+                    <option value="{{ rubro.id }}">{{ rubro.nombre }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Selección de Tipo -->
+            <label for="tipo_id" class="block mb-1">Tipo</label>
+            <select name="tipo_id" id="tipo_id" required class="input input-bordered w-full mb-2">
+                {% for tipo in tipos %}
+                    <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="btn btn-primary w-full">Agregar Producto</button>
+        </form>
     </div>
-</div>
 
+    <!-- Contenedor de productos con desplazamiento interno (2/3) -->
+    <div class="col-span-2 bg-white shadow-md rounded-lg p-0 h-auto">
+
+        <input type="text" placeholder="Escribe para buscar" class="input w-full max-w-xs" />
+        <div class="overflow-x-auto h-[400px]"> <!-- Establece un alto fijo aquí -->
+            <table class="table table-xs table-pin-rows table-pin-cols">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <td>Código</td>
+                        <td>Nombre</td>
+                        <td>Costo</td>
+                        <td>Precio</td>
+                        <td>Stock</td>
+                        <td>Acciones</td>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producto in productos %}
+                    <tr class="{% if loop.index is even %}bg-gray-100{% else %}bg-white{% endif %}">
+                        <th>{{ loop.index }}</th>
+                        <td>{{ producto.codigo1 }}</td>
+                        <td>{{ producto.nombre }}</td>
+                        <td>${{ producto.costo }}</td>
+                        <td>${{ producto.precio }}</td>
+                        <td>{{ producto.stock }}</td>
+                        <td>
+                            <a href="{{ url_for('productos.editar_producto', id=producto.id) }}" class="text-blue-500 hover:underline">Editar</a>
+                            <form action="{{ url_for('productos.eliminar_producto', id=producto.id) }}" method='POST' style='display:inline;'>
+                                <button type='submit' class='text-red-500 hover:underline ml-4'>Eliminar</button>
+                            </form>
+                        </td>
+                        <!-- Esto puede ser opcional -->
+                        <th>{{ loop.index }}</th>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <td>Código</td>
+                        <td>Nombre</td>
+                        <td>Costo</td>
+                        <td>Precio</td>
+                        <td>Stock</td>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- Script para evitar el envío del formulario al presionar 'Enter' en el campo de código -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const codigoField = document.getElementById('codigoInput');
+// Evita el envío del formulario al presionar 'Enter' en el campo de código
+document.addEventListener('DOMContentLoaded', function() {
+    const codigoField = document.getElementById('codigoInput');
+    codigoField.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+        }
+    });
+});
+</script>
 
-            codigoField.addEventListener('keydown', function(event) {
-                // Evita el envío del formulario al presionar 'Enter'
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                }
-            });
-        });
-    </script>
-
-</body>
-</html>
+{% endblock %}

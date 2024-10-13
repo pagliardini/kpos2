@@ -3,6 +3,7 @@ let productosEncontrados = [];
 let indiceSeleccionado = -1;
 
 function mostrarModal() {
+    console.log('Mostrando modal');
     document.getElementById('modal-buscar').style.display = 'block';
     document.getElementById('descripcion').value = '';
     document.getElementById('resultado-busqueda').innerHTML = '';
