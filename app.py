@@ -7,7 +7,6 @@ from views.compras import compras_bp
 from views.caja import caja_bp
 from views.productos import register_productos_blueprints  # Importar la función de productos modularizada
 
-
 def create_app():
     app = Flask(__name__, static_folder='static')
     app.secret_key = 'clave_secreta_random'  # Clave secreta
@@ -27,6 +26,6 @@ def create_app():
 
     return app
 
-
 if __name__ == '__main__':
     app = create_app()
+    app.run(debug=True)  # Asegúrate de incluir esta línea para iniciar el servidor
