@@ -1,21 +1,103 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compras</title>
-    <!-- Agrega aquí otras referencias a CSS, fuentes, etc. -->
-</head>
-<body>
+{% extends 'base.html' %}
 
-    <div>
-        <input type="text" id="codigo" placeholder="Ingrese código del producto">
-        <button id="buscar">Buscar</button>
-    </div>
+{% block title %}Registro de Compras{% endblock %}
 
-    <div id="producto-info"></div> <!-- Aquí se mostrará la información del producto -->
+{% block content %}
+<div class="container mx-auto mt-5">
+    <h2 class="text-2xl mb-4 font-semibold">Registrar Compra</h2>
+    <form id="compraForm" class="bg-white p-5 rounded shadow-md">
+        <div class="form-group mb-4">
+            <label for="id_proveedor" class="block text-sm font-medium">Proveedor</label>
+            <select id="id_proveedor" class="select select-bordered w-full" required>
+                <option value="" disabled selected>Seleccione un proveedor</option>
+                <!-- Aquí se llenará la lista de proveedores con JavaScript -->
+            </select>
+        </div>
+        <div class="form-group mb-4">
+            <label for="iva" class="block text-sm font-medium">IVA (opcional)</label>
+            <input type="number" class="input input-bordered w-full" id="iva" value="0" step="0.01">
+        </div>
+        <h4 class="text-lg font-semibold mb-3">Detalles de Productos</h4>
+        <div id="detallesContainer">
+            <div class="form-group producto mb-4">
+                <label for="producto_id" class="block text-sm font-medium">ID Producto</label>
+                <input type="number" class="input input-bordered w-full" name="producto_id" required>
+                <label for="cantidad" class="block text-sm font-medium mt-2">Cantidad</label>
+                <input type="number" class="input input-bordered w-full" name="cantidad" required>
+                <button type="button" class="btn btn-error mt-2 removeProduct">Eliminar Producto</button>
+            </div>
+        </div>
+        <button type="button" class="btn btn-secondary mt-3" id="addProduct">Agregar Otro Producto</button>
+        <button type="submit" class="btn btn-primary mt-3">Registrar Compra</button>
+    </form>
+</div>
 
-    <!-- Aquí debes colocar la referencia a tu archivo JS -->
-    <script src="{{ url_for('static', filename='compras/compras.js') }}"></script>
-</body>
-</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Cargar proveedores al desplegable
+        $.ajax({
+            url: '/api/proveedores',  // Asumiendo que esta ruta devuelve la lista de proveedores
+            type: 'GET',
+            success: function(proveedores) {
+                proveedores.forEach(function(proveedor) {
+                    $('#id_proveedor').append(`<option value="${proveedor.id}">${proveedor.nombre}</option>`);
+                });
+            },
+            error: function(xhr) {
+                alert('Error al cargar proveedores: ' + xhr.responseJSON.error);
+            }
+        });
+
+        $('#addProduct').click(function() {
+            const newProductHtml = `
+                <div class="form-group producto mb-4">
+                    <label for="producto_id" class="block text-sm font-medium">ID Producto</label>
+                    <input type="number" class="input input-bordered w-full" name="producto_id" required>
+                    <label for="cantidad" class="block text-sm font-medium mt-2">Cantidad</label>
+                    <input type="number" class="input input-bordered w-full" name="cantidad" required>
+                    <button type="button" class="btn btn-error mt-2 removeProduct">Eliminar Producto</button>
+                </div>`;
+            $('#detallesContainer').append(newProductHtml);
+        });
+
+        $(document).on('click', '.removeProduct', function() {
+            $(this).closest('.producto').remove();
+        });
+
+        $('#compraForm').submit(function(event) {
+            event.preventDefault();
+            const id_proveedor = $('#id_proveedor').val();
+            const iva = $('#iva').val();
+            const detalles = [];
+
+            $('.producto').each(function() {
+                const producto_id = $(this).find('input[name="producto_id"]').val();
+                const cantidad = $(this).find('input[name="cantidad"]').val();
+                detalles.push({ producto_id, cantidad });
+            });
+
+            const data = {
+                id_proveedor,
+                iva: parseFloat(iva),
+                detalles
+            };
+
+            $.ajax({
+                url: '/api/procesar_compra',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    alert(response.message);
+                    $('#compraForm')[0].reset();
+                    $('#detallesContainer').empty();
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseJSON.error);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
