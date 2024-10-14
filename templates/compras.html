@@ -1,18 +1,157 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compras</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='compras/styles-compra.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <header>
-        <!-- Incluyendo la navbar -->
-        {% include 'navbar.html' %}
-    </header>
-    <main class="max-w-7xl mx-auto p-4">
-        <h2 class="text-2xl mb-4 font-semibold">Compras</h2>
-    </main>
+
+    <!-- Incluyendo la navbar -->
+    {% include 'navbar.html' %}
+
+    <!-- Contenedor principal con flexbox para organizar columnas -->
+    <div class="flex justify-between space-x-4 px-6">
+        <!-- Columna izquierda -->
+        <div class="left-column w-3/5 bg-white shadow-md rounded-lg p-4">
+            <h1 class="text-2xl font-semibold mb-4">Realizar Compra</h1>
+
+            <form id="form-compra">
+                <div class="mb-4">
+                    <label for="proveedor" class="block text-sm font-medium text-gray-700">Seleccionar Proveedor</label>
+                    <select id="proveedor" required class="border border-gray-300 rounded p-2 w-full">
+                        <option value="">Seleccione un proveedor</option>
+                        {% for proveedor in proveedores %}
+                            <option value="{{ proveedor.id }}">{{ proveedor.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha de Compra</label>
+                    <input type="date" id="fecha" required class="border border-gray-300 rounded p-2 w-full">
+                </div>
+
+                <h2 class="text-lg mb-2">Ingrese código de producto</h2>
+                <input type="text" id="codigo" placeholder="Código de producto" required onkeydown="manejarTeclasAgregar(event)" class="border border-gray-300 rounded p-2 mb-4 w-full">
+                <button type="button" onclick="agregarProducto()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition duration-300">Agregar Producto</button>
+            </form>
+            <br>
+            <!-- Tabla para productos -->
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr class="w-full bg-white">
+                            <th class="text-left py-2 px-4">Código</th>
+                            <th class="text-left py-2 px-4">Descripción</th>
+                            <th class="text-right py-2 px-4">Cantidad</th>
+                            <th class="text-right py-2 px-4">Precio Unitario</th>
+                            <th class="text-right py-2 px-4">Subtotal</th>
+                            <th class="text-center py-2 px-4">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-productos">
+                        <!-- Aquí se llenarán los productos agregados -->
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 id="total" class="text-xl font-bold mt-4">Total: $0.00</h3>
+
+            <div class="mt-4 flex space-x-4">
+                <button onclick="procesarCompra()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-500 transition duration-300">Realizar Compra</button>
+                <button onclick="mostrarModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition duration-300">Buscar producto por descripción</button>
+            </div>
+        </div>
+
+        <!-- Columna derecha (funcionalidad adicional) -->
+        <div class="right-column w-2/5 bg-white shadow-md rounded-lg p-4">
+            <h2 class="text-lg font-semibold mb-4">Funcionalidad adicional</h2>
+            <!-- Aquí puedes añadir el contenido para la nueva funcionalidad -->
+        </div>
+    </div>
+
+    <div id="modal-buscar" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <h2>Buscar Producto por Descripción</h2>
+            <input type="text" id="descripcion" placeholder="Escribe para buscar..." oninput="buscarProductoPorDescripcion()" onkeydown="manejarTeclasNavegacion(event)" autocomplete="off" class="border border-gray-300 rounded p-2 mb-4 w-full">
+            <ul id="resultado-busqueda">
+                <!-- Aquí se mostrarán los resultados de búsqueda -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const urlProcesarCompra = "{{ url_for('compras.procesar_compra') }}";
+
+        // Función para manejar teclas en el campo de código
+        function manejarTeclasAgregar(event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // Evita el envío del formulario
+                agregarProducto(); // Llama a la función para agregar producto
+            }
+        }
+
+        // Función para agregar el producto
+        function agregarProducto() {
+            const codigo = document.getElementById('codigo').value;
+
+            // Aquí iría la lógica para buscar y agregar el producto
+            if (codigo) {
+                // Suponiendo que tienes una función para buscar el producto por su código
+                buscarProducto(codigo);
+                // Restablecer el campo de código después de agregar
+                document.getElementById('codigo').value = '';
+            } else {
+                alert('Por favor, ingresa un código de producto.');
+            }
+        }
+
+        // Función para buscar el producto por código (puedes modificarla según tu lógica)
+        function buscarProducto(codigo) {
+            // Aquí iría la lógica para buscar el producto en la base de datos o en un array
+            // Luego debes agregarlo a la tabla de productos. Aquí hay un ejemplo básico:
+            const listaProductos = document.getElementById('lista-productos');
+            const nuevoProducto = document.createElement('tr');
+            nuevoProducto.innerHTML = `
+                <td class="py-2 px-4">${codigo}</td>
+                <td class="py-2 px-4">Descripción del Producto</td>
+                <td class="py-2 px-4 text-right">1</td>
+                <td class="py-2 px-4 text-right">$10.00</td>
+                <td class="py-2 px-4 text-right">$10.00</td>
+                <td class="py-2 px-4 text-center"><button class="text-red-500" onclick="eliminarProducto(this)">Eliminar</button></td>
+            `;
+            listaProductos.appendChild(nuevoProducto);
+            actualizarTotal();
+        }
+
+        // Función para actualizar el total (puedes ajustar esta lógica según tu necesidad)
+        function actualizarTotal() {
+            const totalElement = document.getElementById('total');
+            const filas = document.querySelectorAll('#lista-productos tr');
+            let total = 0;
+            filas.forEach(fila => {
+                const precio = parseFloat(fila.cells[4].textContent.replace('$', '')) || 0;
+                total += precio;
+            });
+            totalElement.textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        // Función para eliminar un producto (puedes implementarla según tu lógica)
+        function eliminarProducto(button) {
+            const fila = button.parentNode.parentNode;
+            fila.remove();
+            actualizarTotal();
+        }
+    </script>
+    <script src="{{ url_for('static', filename='compras/app-focus.js') }}"></script>
+    <script src="{{ url_for('static', filename='compras/productos.js') }}"></script>
+    <script src="{{ url_for('static', filename='compras/modal.js') }}"></script>
+    <script src="{{ url_for('static', filename='compras/compra.js') }}"></script>
+    <script src="{{ url_for('static', filename='compras/navegarfactura.js') }}"></script>
+
 </body>
 </html>
