@@ -1,103 +1,62 @@
 {% extends 'base.html' %}
 
-{% block title %}Registro de Compras{% endblock %}
+{% block title %}microPOS 1.0{% endblock %}
+
+<styles>
+    .selected {
+  background-color: black; /* Puedes cambiar el color a tu gusto */
+}
+</styles>
 
 {% block content %}
-<div class="container mx-auto mt-5">
-    <h2 class="text-2xl mb-4 font-semibold">Registrar Compra</h2>
-    <form id="compraForm" class="bg-white p-5 rounded shadow-md">
-        <div class="form-group mb-4">
-            <label for="id_proveedor" class="block text-sm font-medium">Proveedor</label>
-            <select id="id_proveedor" class="select select-bordered w-full" required>
-                <option value="" disabled selected>Seleccione un proveedor</option>
-                <!-- Aquí se llenará la lista de proveedores con JavaScript -->
+
+<h2 class="text-2xl mb-4 font-semibold">Compras</h2>
+
+<div class="grid grid-cols-12 gap-6 p-1">
+    <div class="col-span-3 bg-white shadow-md rounded-lg p-4">
+        <div class="mb-4">
+            <select id="proveedor_id">
+                <option value="">Seleccionar Proveedor</option>
+                {% for proveedor in proveedores %}
+                    <option value="{{ proveedor.id }}">{{ proveedor.nombre }}</option>
+                {% endfor %}
             </select>
-        </div>
-        <div class="form-group mb-4">
-            <label for="iva" class="block text-sm font-medium">IVA (opcional)</label>
-            <input type="number" class="input input-bordered w-full" id="iva" value="0" step="0.01">
-        </div>
-        <h4 class="text-lg font-semibold mb-3">Detalles de Productos</h4>
-        <div id="detallesContainer">
-            <div class="form-group producto mb-4">
-                <label for="producto_id" class="block text-sm font-medium">ID Producto</label>
-                <input type="number" class="input input-bordered w-full" name="producto_id" required>
-                <label for="cantidad" class="block text-sm font-medium mt-2">Cantidad</label>
-                <input type="number" class="input input-bordered w-full" name="cantidad" required>
-                <button type="button" class="btn btn-error mt-2 removeProduct">Eliminar Producto</button>
+            <div class="mt-2">
+                <label for="fecha_compra" class="block mb-1">Fecha de Compra</label>
+                <input type="date" id="fecha_compra" class="w-full border p-2">
             </div>
+            <div class="mt-2">
+                <label for="iva" class="block mb-1">IVA</label>
+                <input type="number" step="0.01" id="iva" class="w-full border p-2">
+            </div>
+            <div class="mt-2">
+                <label for="total" class="block mb-1">Total</label>
+                <input type="number" step="0.01" id="total" class="w-full border p-2" readonly>  </div>
         </div>
-        <button type="button" class="btn btn-secondary mt-3" id="addProduct">Agregar Otro Producto</button>
-        <button type="submit" class="btn btn-primary mt-3">Registrar Compra</button>
-    </form>
+    </div>
+
+    <div class="col-span-8 bg-white shadow-md rounded-lg p-4 overflow-x-auto h-[400px]">
+        <table class="table table-xs table-pin-rows table-pin-cols">
+            <input type="text" id="codigo_producto" class="border p-2 mt-4" placeholder="Ingrese el código del producto">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Costo</th>
+                    <th>Stock</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody id="productos_tabla">
+                </tbody>
+        </table>
+    </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Cargar proveedores al desplegable
-        $.ajax({
-            url: '/api/proveedores',  // Asumiendo que esta ruta devuelve la lista de proveedores
-            type: 'GET',
-            success: function(proveedores) {
-                proveedores.forEach(function(proveedor) {
-                    $('#id_proveedor').append(`<option value="${proveedor.id}">${proveedor.nombre}</option>`);
-                });
-            },
-            error: function(xhr) {
-                alert('Error al cargar proveedores: ' + xhr.responseJSON.error);
-            }
-        });
+<div class="text-center mt-4">
+    <button id="registrar_compra_btn" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Registrar Compra</button>
+</div>
 
-        $('#addProduct').click(function() {
-            const newProductHtml = `
-                <div class="form-group producto mb-4">
-                    <label for="producto_id" class="block text-sm font-medium">ID Producto</label>
-                    <input type="number" class="input input-bordered w-full" name="producto_id" required>
-                    <label for="cantidad" class="block text-sm font-medium mt-2">Cantidad</label>
-                    <input type="number" class="input input-bordered w-full" name="cantidad" required>
-                    <button type="button" class="btn btn-error mt-2 removeProduct">Eliminar Producto</button>
-                </div>`;
-            $('#detallesContainer').append(newProductHtml);
-        });
+<script src="{{ url_for('static', filename='compras/compras.js') }}"></script>
 
-        $(document).on('click', '.removeProduct', function() {
-            $(this).closest('.producto').remove();
-        });
-
-        $('#compraForm').submit(function(event) {
-            event.preventDefault();
-            const id_proveedor = $('#id_proveedor').val();
-            const iva = $('#iva').val();
-            const detalles = [];
-
-            $('.producto').each(function() {
-                const producto_id = $(this).find('input[name="producto_id"]').val();
-                const cantidad = $(this).find('input[name="cantidad"]').val();
-                detalles.push({ producto_id, cantidad });
-            });
-
-            const data = {
-                id_proveedor,
-                iva: parseFloat(iva),
-                detalles
-            };
-
-            $.ajax({
-                url: '/api/procesar_compra',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                success: function(response) {
-                    alert(response.message);
-                    $('#compraForm')[0].reset();
-                    $('#detallesContainer').empty();
-                },
-                error: function(xhr) {
-                    alert('Error: ' + xhr.responseJSON.error);
-                }
-            });
-        });
-    });
-</script>
 {% endblock %}
