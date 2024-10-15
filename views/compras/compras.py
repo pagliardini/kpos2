@@ -43,3 +43,39 @@ def buscar_producto():
     }
 
     return jsonify(producto_data)
+
+
+@compras_bp.route('/procesar_compra', methods=['POST'])
+def procesar_compra():
+    data = request.json
+
+    # Obtener datos de la compra
+    id_proveedor = data.get('id_proveedor')
+    iva = data.get('iva')
+    total = data.get('total')
+    detalles = data.get('detalles')
+
+    # Crear una nueva compra
+    nueva_compra = Compra(id_proveedor=id_proveedor, iva=iva, total=total)
+
+    db.session.add(nueva_compra)
+
+    # Guardar cambios para obtener el ID de la compra
+    db.session.commit()
+
+    # Agregar detalles de la compra
+    for detalle in detalles:
+        nuevo_detalle = CompraDetalle(
+            compra_id=nueva_compra.id,
+            producto_id=detalle['producto_id'],
+            producto_nombre=detalle['producto_nombre'],
+            cantidad=detalle['cantidad'],
+            precio_unitario=detalle['precio_unitario']
+        )
+
+        db.session.add(nuevo_detalle)
+
+    # Confirmar todos los cambios en la base de datos
+    db.session.commit()
+
+    return jsonify({"success": True}), 200
