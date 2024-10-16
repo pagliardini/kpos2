@@ -1,30 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestionar Marcas</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">Gestionar Marcas</h1>
+{% extends 'base.html' %}
 
-        <form action="{{ url_for('productos.agregar_marca') }}" method="POST" class="mb-4">
-            <input type="text" name="nombre" placeholder="Nombre de la marca" required class="border p-2 rounded">
-            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Agregar Marca</button>
+{% block title %}Marcas - kPOS{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl mb-4 font-semibold">Gestión de Marcas</h2>
+
+<div class="grid grid-cols-3 gap-6 p-1">
+    <!-- Formulario para agregar marca -->
+    <div class="col-span-1 bg-white shadow-md rounded-lg p-4">
+        <h3 class="text-xl font-semibold mb-4">Agregar Marca</h3>
+        <form action="{{ url_for('marcas.agregar_marca') }}" method="POST" class="mb-6">
+            <label class="input input-bordered flex items-center gap-2 mb-2">
+                <input type="text" name="nombre" placeholder="Nombre de la marca" required class="grow" />
+                <i class="bi bi-tag-fill h-4 w-4 opacity-70"></i>
+            </label>
+            <button type="submit" class="btn btn-primary w-full">Agregar Marca</button>
         </form>
-
-        <ul>
-            {% for marca in marcas %}
-                <li>{{ marca.nombre }}
-                    <form action="{{ url_for('productos.eliminar_marca', id=marca.id) }}" method="POST" style="display:inline;">
-                        <button type="submit" class="text-red-500 hover:underline">Eliminar</button>
-                    </form>
-                    <a href="{{ url_for('productos.editar_marca', id=marca.id) }}" class="text-blue-500 hover:underline">Editar</a>
-                </li>
-            {% endfor %}
-        </ul>
     </div>
-</body>
-</html>
+
+    <!-- Lista de marcas -->
+    <div class="col-span-2 bg-white shadow-md rounded-lg p-4">
+        <h3 class="text-xl font-semibold mb-4">Lista de Marcas</h3>
+        <div class="overflow-x-auto">
+            <table class="table table-zebra w-full">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for marca in marcas %}
+                    <tr>
+                        <td>{{ marca.id }}</td>
+                        <td>{{ marca.nombre }}</td>
+                        <td>
+                            <a href="{{ url_for('marcas.editar_marca', id=marca.id) }}" class="btn btn-sm btn-outline btn-info">Editar</a>
+                            <form action="{{ url_for('marcas.eliminar_marca', id=marca.id) }}" method="POST" class="inline">
+                                <button type="submit" class="btn btn-sm btn-outline btn-error" onclick="return confirm('¿Estás seguro de que quieres eliminar esta marca?')">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -20,7 +20,7 @@ def agregar_marca():
     db.session.commit()
     flash('Marca agregada exitosamente')
 
-    return redirect(url_for('productos.listar_marcas'))
+    return redirect(url_for('marcas.listar_marcas'))
 
 
 @marcas_bp.route('/marcas/editar/<int:id>', methods=['GET', 'POST'])
@@ -30,7 +30,7 @@ def editar_marca(id):
         marca.nombre = request.form['nombre']
         db.session.commit()
         flash('Marca actualizada exitosamente')
-        return redirect(url_for('productos.listar_marcas'))
+        return redirect(url_for('marcas.listar_marcas'))
     return render_template('editar_marca.html', marca=marca)
 
 
@@ -40,4 +40,4 @@ def eliminar_marca(id):
     db.session.delete(marca)
     db.session.commit()
     flash('Marca eliminada exitosamente')
-    return redirect(url_for('productos.listar_marcas'))
+    return redirect(url_for('marcas.listar_marcas'))
