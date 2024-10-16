@@ -23,7 +23,7 @@ def listar_productos():
         return render_template('productos.html', productos=productos, marcas=marcas, rubros=rubros, tipos=tipos)
 
 
-@productos_bp.route('/agregar_producto', methods=['POST'])
+@productos_bp.route('/productos/agregar', methods=['POST'])
 def agregar_producto():
     # Inicializar variables desde request.form o request.get_json() según el tipo de solicitud
     if request.is_json:
