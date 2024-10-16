@@ -17,7 +17,7 @@ function cerrarModal() {
 function buscarProductoPorDescripcion() {
     const descripcion = document.getElementById('descripcion').value;
     if (descripcion.length > 0) {
-        fetch(`/buscar_producto_descripcion?descripcion=${descripcion}`)
+            fetch(`/ventas/buscar/descripcion?descripcion=${descripcion}`)
             .then(response => response.json())
             .then(productos => {
                 productosEncontrados = productos.slice(0, 15);
@@ -71,7 +71,7 @@ function resaltarProductoSeleccionado(items) {
 }
 
 function agregarProductoPorId(idProducto) {
-    fetch(`/buscar_producto_por_id?id=${idProducto}`)
+    fetch(`/ventas/buscar/id?id=${idProducto}`)
         .then(response => response.json())
         .then(producto => {
             if (producto) {

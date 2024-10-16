@@ -2,44 +2,31 @@ from flask import Blueprint, render_template, request, redirect, url_for, jsonif
 from models.producto import Producto
 from models.factura import Factura, FacturaDetalle
 from extensions import db
-import json
 
 ventas_bp = Blueprint('ventas', __name__)
 
-
-# Ruta para mostrar los productos
+# Ruta para mostrar la página de ventas
 @ventas_bp.route('/ventas')
 def ventas():
     return render_template('ventas.html')
 
-
 # Ruta para procesar la venta
-@ventas_bp.route('/procesar_venta', methods=['POST'])
+@ventas_bp.route('/ventas/procesar', methods=['POST'])
 def procesar_venta():
-    # Obtener JSON enviado en el cuerpo de la petición
     data = request.get_json()
-
     productos = data.get('productos', [])
     total_venta = 0
 
     if productos:
         detalles_factura = []
 
-        # Calcular el total y preparar los detalles de la venta
         for producto_data in productos:
             id_producto = producto_data.get('id')
             cantidad = producto_data.get('cantidad', 1)
-
-            # Imprimir para verificar las cantidades recibidas
-            print(f"Producto ID: {id_producto}, Cantidad recibida: {cantidad}")
-
-            # Buscar el producto por ID
             producto = Producto.query.get(id_producto)
-            if producto and producto.precio:
-                # Calcular el total de la venta
-                total_venta += float(producto.precio) * int(cantidad)
 
-                # Crear el detalle de la factura con el nombre del producto
+            if producto and producto.precio:
+                total_venta += float(producto.precio) * int(cantidad)
                 detalle = FacturaDetalle(
                     producto_id=producto.id,
                     producto_nombre=producto.nombre,
@@ -48,37 +35,29 @@ def procesar_venta():
                 )
                 detalles_factura.append(detalle)
 
-                # Si la cantidad es negativa, sumar al stock
                 if cantidad < 0:
-                    print(f"Cantidad negativa detectada para {producto.nombre}: {cantidad}. Sumando al stock.")
                     producto.stock += abs(cantidad)
                 else:
-                    # Descontar del stock si es positiva
                     producto.stock -= cantidad
 
-                # Guardar los cambios del stock en la base de datos
                 db.session.commit()
-
             else:
                 print(f"Producto con ID {id_producto} no encontrado o sin precio")
 
-        print(f"Total de la venta calculado: {total_venta}")
-
-        # Crear la nueva factura y agregar los detalles, independientemente de si el total es positivo o negativo
         nueva_factura = Factura(total=total_venta)
         db.session.add(nueva_factura)
-        db.session.commit()  # Necesario para generar el ID de la factura
+        db.session.commit()
 
-        # Asignar los detalles de la factura a la factura recién creada
         for detalle in detalles_factura:
             detalle.factura_id = nueva_factura.id
             db.session.add(detalle)
 
-        db.session.commit()  # Guardar los detalles en la base de datos
+        db.session.commit()
 
     return redirect(url_for('ventas.ventas'))
 
-@ventas_bp.route('/buscar_producto')
+# Ruta para buscar producto por código
+@ventas_bp.route('/ventas/buscar/codigo')
 def buscar_producto():
     codigo = request.args.get('codigo')
     producto = Producto.query.filter_by(codigo1=codigo).first()
@@ -90,7 +69,8 @@ def buscar_producto():
         })
     return jsonify(None), 404
 
-@ventas_bp.route('/buscar_producto_descripcion')
+# Ruta para buscar producto por descripción
+@ventas_bp.route('/ventas/buscar/descripcion')
 def buscar_producto_descripcion():
     descripcion = request.args.get('descripcion')
     productos = Producto.query.filter(Producto.nombre.ilike(f'%{descripcion}%')).all()
@@ -99,7 +79,9 @@ def buscar_producto_descripcion():
         'nombre': producto.nombre,
         'precio': producto.precio
     } for producto in productos])
-@ventas_bp.route('/buscar_producto_por_id')
+
+# Ruta para buscar producto por ID
+@ventas_bp.route('/ventas/buscar/id')
 def buscar_producto_por_id():
     id_producto = request.args.get('id')
     producto = Producto.query.get(id_producto)
@@ -110,4 +92,3 @@ def buscar_producto_por_id():
             'precio': producto.precio
         })
     return jsonify(None), 404
-

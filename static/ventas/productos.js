@@ -2,7 +2,7 @@
 let productosSeleccionados = [];
 
 function agregarProductoPorCodigo(codigo) {
-    fetch(`/buscar_producto?codigo=${codigo}`)
+    fetch(`/ventas/buscar/codigo?codigo=${codigo}`)
         .then(response => response.json())
         .then(producto => {
             if (producto) {
