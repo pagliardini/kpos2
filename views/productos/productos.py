@@ -1,6 +1,9 @@
+from xml.etree.ElementPath import prepare_descendant
+
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from models.producto import Producto, Rubro, Marca, Tipo
 from extensions import db
+import pandas as pd
 
 productos_bp = Blueprint('productos', __name__)
 
@@ -115,3 +118,50 @@ def eliminar_producto(id):
     else:
         flash('Producto eliminado exitosamente')
         return redirect(url_for('productos.listar_productos'))
+
+
+@productos_bp.route('/cargar_productos', methods=['POST'])
+def cargar_productos():
+    if 'file' not in request.files:
+        flash('No se ha seleccionado ningún archivo.', 'danger')
+        return redirect(url_for('productos.listar_productos'))
+
+    file = request.files['file']
+
+    if file.filename == '':
+        flash('No se ha seleccionado ningún archivo.', 'danger')
+        return redirect(url_for('productos.listar_productos'))
+
+    if file and allowed_file(file.filename):
+        # Leer el archivo Excel
+        df = pd.read_excel(file)
+
+        # Iterar sobre las filas y crear productos
+        for index, row in df.iterrows():
+            codigo1 = row['codigo1']
+            nombre = row['nombre']
+            costo = row['costo']
+            precio = row['precio']
+
+            # Validar si el producto ya existe
+            if Producto.query.filter_by(codigo1=codigo1).first():
+                continue  # Ignorar si ya existe
+
+            nuevo_producto = Producto(
+                codigo1=codigo1,
+                nombre=nombre,
+                costo=costo,
+                precio=precio,
+                stock=0  # Inicializar stock a 0 o lo que desees
+            )
+            db.session.add(nuevo_producto)
+
+        db.session.commit()
+        flash('Productos cargados exitosamente!', 'success')
+    else:
+        flash('Formato de archivo no permitido. Asegúrate de subir un archivo Excel.', 'danger')
+
+    return redirect(url_for('productos.listar_productos'))
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ['xls', 'xlsx']

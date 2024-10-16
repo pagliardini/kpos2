@@ -62,57 +62,62 @@
     </div>
 
     <!-- Contenedor de productos con desplazamiento interno (2/3) -->
-    <div class="col-span-2 bg-white shadow-md rounded-lg p-0 h-auto">
-
-        <input type="text" placeholder="Escribe para buscar" class="input w-full max-w-xs" />
-        <div class="overflow-x-auto h-[400px]"> <!-- Establece un alto fijo aquí -->
-            <table class="table table-xs table-pin-rows table-pin-cols">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <td>Código</td>
-                        <td>Nombre</td>
-                        <td>Costo</td>
-                        <td>Precio</td>
-                        <td>Stock</td>
-                        <td>Acciones</td>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for producto in productos %}
-                    <tr class="{% if loop.index is even %}bg-gray-100{% else %}bg-white{% endif %}">
-                        <th>{{ loop.index }}</th>
-                        <td>{{ producto.codigo1 }}</td>
-                        <td>{{ producto.nombre }}</td>
-                        <td>${{ producto.costo }}</td>
-                        <td>${{ producto.precio }}</td>
-                        <td>{{ producto.stock }}</td>
-                        <td>
-                            <a href="{{ url_for('productos.editar_producto', id=producto.id) }}" class="text-blue-500 hover:underline">Editar</a>
-                            <form action="{{ url_for('productos.eliminar_producto', id=producto.id) }}" method='POST' style='display:inline;'>
-                                <button type='submit' class='text-red-500 hover:underline ml-4'>Eliminar</button>
-                            </form>
-                        </td>
-                        <!-- Esto puede ser opcional -->
-                        <th>{{ loop.index }}</th>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th></th>
-                        <td>Código</td>
-                        <td>Nombre</td>
-                        <td>Costo</td>
-                        <td>Precio</td>
-                        <td>Stock</td>
-                        <th></th>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+<div class="col-span-2 bg-white shadow-md rounded-lg p-0 h-auto">
+    <form action="{{ url_for('productos.cargar_productos') }}" method="POST" enctype="multipart/form-data" class="mb-6">
+        <label for="file" class="block mb-2">Cargar archivo de productos (XLS/XLSX)</label>
+        <input type="file" id="file" name="file" required class="border border-gray-300 rounded p-2 mb-4 w-full">
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition duration-300">Cargar Productos</button>
+    </form>
+    <input type="text" placeholder="Escribe para buscar" class="input w-full max-w-xs" />
+    <div class="overflow-x-auto h-[400px]"> <!-- Establece un alto fijo aquí -->
+        <table class="table table-xs table-pin-rows table-pin-cols">
+            <thead>
+                <tr>
+                    <th></th>
+                    <td style="width: 100px;">Código</td> <!-- Establece un ancho fijo para la columna Código -->
+                    <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Nombre</td> <!-- Columna Nombre -->
+                    <td>Costo</td>
+                    <td>Precio</td>
+                    <td>Stock</td>
+                    <td>Acciones</td>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                <tr class="{% if loop.index is even %}bg-gray-100{% else %}bg-white{% endif %}">
+                    <th>{{ loop.index }}</th>
+                    <td>{{ producto.codigo1 }}</td>
+                    <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ producto.nombre }}</td> <!-- Columna Nombre -->
+                    <td>${{ producto.costo }}</td>
+                    <td>${{ producto.precio }}</td>
+                    <td>{{ producto.stock }}</td>
+                    <td>
+                        <a href="{{ url_for('productos.editar_producto', id=producto.id) }}" class="text-blue-500 hover:underline">Editar</a>
+                        <form action="{{ url_for('productos.eliminar_producto', id=producto.id) }}" method='POST' style='display:inline;'>
+                            <button type='submit' class='text-red-500 hover:underline ml-4'>Eliminar</button>
+                        </form>
+                    </td>
+                    <!-- Esto puede ser opcional -->
+                    <th>{{ loop.index }}</th>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th></th>
+                    <td>Código</td>
+                    <td>Nombre</td>
+                    <td>Costo</td>
+                    <td>Precio</td>
+                    <td>Stock</td>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
     </div>
+</div>
+</div>
 
     <!-- Script para evitar el envío del formulario al presionar 'Enter' en el campo de código -->
     <script>
