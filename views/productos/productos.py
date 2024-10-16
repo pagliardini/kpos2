@@ -10,7 +10,10 @@ productos_bp = Blueprint('productos', __name__)
 
 @productos_bp.route('/productos', methods=['GET'])
 def listar_productos():
-    productos = Producto.query.all()
+    limit = request.args.get('limit', 50, type=int)  # Limitar a 50 por defecto
+    offset = request.args.get('offset', 0, type=int)
+
+    productos = Producto.query.limit(limit).offset(offset).all()
     marcas = Marca.query.all()
     rubros = Rubro.query.all()
     tipos = Tipo.query.all()
@@ -165,3 +168,17 @@ def cargar_productos():
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ['xls', 'xlsx']
+
+@productos_bp.route('/productos/buscar', methods=['GET'])
+def buscar_productos():
+    query = request.args.get('q', '').strip()
+
+    # Buscar productos cuyo nombre o código coincidan con el término de búsqueda
+    productos = Producto.query.filter(
+        db.or_(
+            Producto.nombre.ilike(f'%{query}%'),
+            Producto.codigo1.ilike(f'%{query}%')
+        )
+    ).limit(50).all()  # Limitar la cantidad de resultados para evitar sobrecarga
+
+    return jsonify([producto.to_dict() for producto in productos])

@@ -120,16 +120,7 @@
 </div>
 
     <!-- Script para evitar el envío del formulario al presionar 'Enter' en el campo de código -->
-    <script>
-// Evita el envío del formulario al presionar 'Enter' en el campo de código
-document.addEventListener('DOMContentLoaded', function() {
-    const codigoField = document.getElementById('codigoInput');
-    codigoField.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-        }
-    });
-});
-</script>
+<script src="{{ url_for('static', filename='productos/productos.js') }}"></script>
+
 
 {% endblock %}
