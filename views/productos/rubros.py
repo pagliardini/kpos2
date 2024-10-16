@@ -19,7 +19,7 @@ def agregar_rubro():
     db.session.commit()
     flash('Rubro agregado exitosamente')
 
-    return redirect(url_for('productos.listar_rubros'))
+    return redirect(url_for('rubros.listar_rubros'))
 
 
 @rubros_bp.route('/rubros/editar/<int:id>', methods=['GET', 'POST'])
@@ -29,7 +29,7 @@ def editar_rubro(id):
         rubro.nombre = request.form['nombre']
         db.session.commit()
         flash('Rubro actualizado exitosamente')
-        return redirect(url_for('productos.listar_rubros'))
+        return redirect(url_for('rubros.listar_rubros'))
     return render_template('editar_rubro.html', rubro=rubro)
 
 
@@ -39,4 +39,4 @@ def eliminar_rubro(id):
     db.session.delete(rubro)
     db.session.commit()
     flash('Rubro eliminado exitosamente')
-    return redirect(url_for('productos.listar_rubros'))
+    return redirect(url_for('rubros.listar_rubros'))

@@ -1,30 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestionar Tipos</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">Gestionar Tipos</h1>
+{% extends 'base.html' %}
 
-        <form action="{{ url_for('productos.agregar_tipo') }}" method="POST" class="mb-4">
-            <input type="text" name="nombre" placeholder="Nombre del tipo" required class="border p-2 rounded">
-            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Agregar Tipo</button>
+{% block title %}Tipos - kPOS{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl mb-4 font-semibold">Gestión de Tipos</h2>
+
+<div class="grid grid-cols-3 gap-6 p-1">
+    <!-- Formulario para agregar tipo -->
+    <div class="col-span-1 bg-white shadow-md rounded-lg p-4">
+        <h3 class="text-xl font-semibold mb-4">Agregar Rubro</h3>
+        <form action="{{ url_for('tipos.agregar_tipo') }}" method="POST" class="mb-6">
+            <label class="input input-bordered flex items-center gap-2 mb-2">
+                <input type="text" name="nombre" placeholder="Nombre del tipo" required class="grow" />
+                <i class="bi bi-tag-fill h-4 w-4 opacity-70"></i>
+            </label>
+            <button type="submit" class="btn btn-primary w-full">Agregar Tipo</button>
         </form>
-
-        <ul>
-            {% for tipo in tipos %}
-                <li>{{ tipo.nombre }}
-                    <form action="{{ url_for('productos.eliminar_tipo', id=tipo.id) }}" method="POST" style="display:inline;">
-                        <button type="submit" class="text-red-500 hover:underline">Eliminar</button>
-                    </form>
-                    <a href="{{ url_for('productos.editar_tipo', id=tipo.id) }}" class="text-blue-500 hover:underline">Editar</a>
-                </li>
-            {% endfor %}
-        </ul>
     </div>
-</body>
-</html>
+
+    <!-- Lista de tipos -->
+    <div class="col-span-2 bg-white shadow-md rounded-lg p-4">
+        <h3 class="text-xl font-semibold mb-4">Lista de Tipos</h3>
+        <div class="overflow-x-auto">
+            <table class="table table-zebra w-full">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tipo in tipos %}
+                    <tr>
+                        <td>{{ tipo.id }}</td>
+                        <td>{{ tipo.nombre }}</td>
+                        <td>
+                            <a href="{{ url_for('tipos.editar_tipo', id=tipo.id) }}" class="btn btn-sm btn-outline btn-info">Editar</a>
+                            <form action="{{ url_for('tipos.eliminar_tipo', id=tipo.id) }}" method="POST" class="inline">
+                                <button type="submit" class="btn btn-sm btn-outline btn-error" onclick="return confirm('¿Estás seguro de que quieres eliminar este tipo?')">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -19,7 +19,7 @@ def agregar_tipo():
     db.session.add(nuevo_tipo)
     db.session.commit()
     flash('Tipo agregado exitosamente')
-    return redirect(url_for('productos.listar_tipos'))
+    return redirect(url_for('tipos.listar_tipos'))
 
 
 @tipos_bp.route('/tipos/editar/<int:id>', methods=['GET', 'POST'])
@@ -29,7 +29,7 @@ def editar_tipo(id):
         tipo.nombre = request.form['nombre']
         db.session.commit()
         flash('Tipo actualizado exitosamente')
-        return redirect(url_for('productos.listar_tipos'))
+        return redirect(url_for('tipos.listar_tipos'))
     return render_template('editar_tipo.html', tipo=tipo)
 
 
@@ -39,4 +39,4 @@ def eliminar_tipo(id):
     db.session.delete(tipo)
     db.session.commit()
     flash('Tipo eliminado exitosamente')
-    return redirect(url_for('productos.listar_tipos'))
+    return redirect(url_for('tipos.listar_tipos'))
