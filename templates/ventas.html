@@ -12,36 +12,31 @@
     <!-- Incluyendo la navbar -->
     {% include 'navbar.html' %}
 
+    <br>
+
     <!-- Contenedor principal con flexbox para organizar columnas -->
     <div class="flex justify-between space-x-4 px-6">
         <!-- Columna izquierda -->
-        <div class="left-column w-3/5 bg-white shadow-md rounded-lg p-4">
-            <h1 class="text-2xl font-semibold mb-4">Realizar Venta</h1>
+        <div class="left-column w-4/5 bg-white shadow-md rounded-lg p-4">
 
-            <form id="form-venta" onsubmit="event.preventDefault(); agregarProductoPorCodigo(document.getElementById('codigo').value);">
-                <h2 class="text-lg mb-2">Ingrese código de producto</h2>
-                <input type="text" id="codigo" placeholder="Código de producto" required class="border border-gray-300 rounded p-2 mb-4 w-full">
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition duration-300">Agregar Producto</button>
-            </form>
 <br>
             <!-- Tabla para productos -->
             <div class="overflow-x-auto">
-                <table class="min-w-full bg-white">
-                    <thead>
-                        <tr class="w-full bg-white">
-                            <th class="text-left py-2 px-4">Código</th>
-                            <th class="text-left py-2 px-4">Descripción</th>
-                            <th class="text-right py-2 px-4">Cantidad</th>
-                            <th class="text-right py-2 px-4">Precio Unitario</th>
-                            <th class="text-right py-2 px-4">Subtotal</th>
-                            <th class="text-center py-2 px-4">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="lista-productos">
-                        <!-- Aquí se llenarán los productos agregados -->
-                    </tbody>
-                </table>
-            </div>
+<table class="min-w-full bg-white">
+    <thead>
+        <tr class="w-full bg-white">
+            <th class="text-left py-2 px-0">Código</th>
+            <th class="text-left py-2 px-0">Descripción</th>
+            <th class="text-left py-2 px-0">Cantidad</th>
+            <th class="text-right py-2 px-1">Precio</th>
+            <th class="text-right py-2 px-4">Subtotal</th>
+            <th class="text-center py-2 px-1">Acc.</th>
+        </tr>
+    </thead>
+    <tbody id="lista-productos">
+        <!-- Aquí se llenarán los productos agregados -->
+    </tbody>
+</table>            </div>
 
             <h3 id="total" class="text-xl font-bold mt-4">Total: $0.00</h3>
 
@@ -54,7 +49,11 @@
         <!-- Columna derecha (funcionalidad adicional) -->
         <div class="right-column w-2/5 bg-white shadow-md rounded-lg p-4">
             <h2 class="text-lg font-semibold mb-4">Funcionalidad adicional</h2>
-            <!-- Aquí puedes añadir el contenido para la nueva funcionalidad -->
+            <form id="form-venta" onsubmit="event.preventDefault(); agregarProductoPorCodigo(document.getElementById('codigo').value);">
+                <h2 class="text-lg mb-2">Ingrese código de producto</h2>
+                <input type="text" id="codigo" placeholder="Código de producto" required class="border border-gray-300 rounded p-2 mb-4 w-full">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition duration-300">Agregar Producto</button>
+            </form>
         </div>
     </div>
 

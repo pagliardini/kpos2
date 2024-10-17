@@ -27,24 +27,61 @@
     font-size: 24px;
     cursor: pointer;
 }
+
 .selected {
     color: #4CAF50;
     background-color: #333333 !important; /* Asegura que el fondo seleccionado tenga prioridad */
     font-style: oblique;
 }
 
-/* Puedes ajustar el espaciado o estilos adicionales si lo deseas */
-table th, table td {
-    padding: 12px 16px;
+/* Estilos para la tabla */
+    table {
+        width: 100%; /* Ancho total de la tabla */
+        table-layout: fixed; /* Layout fijo */
+    }
+    th, td {
+        overflow: hidden; /* Oculta el desbordamiento */
+        white-space: nowrap; /* No permite saltos de línea */
+        text-overflow: ellipsis; /* Muestra '...' cuando hay desbordamiento */
+    }
+    th:nth-child(1) { width: 12%; } /* Ancho fijo para Código */
+    th:nth-child(2) { width: 60%; } /* Ancho fijo para Descripción */
+    th:nth-child(3) { width: 15%; } /* Ancho fijo para Cantidad */
+    th:nth-child(4) { width: 15%; } /* Ancho fijo para Precio */
+    th:nth-child(5) { width: 15%; } /* Ancho fijo para Subtotal */
+    th:nth-child(6) { width: 10%; } /* Ancho fijo para Acciones */
+
+.table th, .table td {
+    min-width: 80px; /* Ancho mínimo para las celdas */
+    max-width: 200px; /* Ancho máximo para las celdas */
+    overflow: hidden; /* Oculta el contenido que desborda */
+    text-overflow: ellipsis; /* Muestra '...' para contenido desbordado */
+    white-space: nowrap; /* Evita saltos de línea dentro de las celdas */
 }
 
 table thead th {
     font-weight: 600;
     background-color: #f5f5f5;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 1px solid #ddd;
 }
 
 /* Mantén el estilo de las filas pares, pero asegúrate de que .selected siempre prevalezca */
 table tbody tr:nth-child(even) {
     background-color: #f9f9f9;
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #888;
+    z-index: 1001; /* Asegúrate de que esté por encima de otros elementos */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.popup-content {
+    text-align: center;
 }
