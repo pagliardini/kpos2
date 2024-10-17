@@ -1,0 +1,293 @@
+[33mcommit c23bbf3eafe2926d8a38db5512cd2c3752118af7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Thu Oct 17 16:01:44 2024 -0300
+
+    agregado sweet alert
+
+[33mcommit c20d282d165be36b99ade8346168e92a0ce06f27[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Thu Oct 17 15:29:24 2024 -0300
+
+    mejorado ventas ui
+
+[33mcommit b9bf132fa942e905532c7b7682c37b7760cebd5b[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Thu Oct 17 14:27:01 2024 -0300
+
+    terminado productos
+
+[33mcommit 576e59287be3ea6a5fd9aaff58e1f08cfba86462[m
+Author: Alan <alan.gpagliardini@gmail.com>
+Date:   Thu Oct 17 00:07:44 2024 -0300
+
+    cors
+
+[33mcommit f6f82d724ff051e425438a99345a39544edf2fbd[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Wed Oct 16 14:34:21 2024 -0300
+
+    gestion de tipos y rubros
+
+[33mcommit c85c3f27bdc7e639bb87dc90adc9281a2ce88779[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Wed Oct 16 14:19:13 2024 -0300
+
+    gestion de marcas
+
+[33mcommit 5e25fc25ba036e40504678f59afcc6d4ed44aaa8[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Wed Oct 16 13:24:23 2024 -0300
+
+    improved ui ventas
+
+[33mcommit fd45aa5aec4d8d007bd5070e843b4ad19b3feb99[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Wed Oct 16 12:38:56 2024 -0300
+
+    mejorado filtrado productos
+
+[33mcommit 440be3a6e3366c60dbd102f61f18eb68bba82e2d[m
+Author: Alan <alan.gpagliardini@gmail.com>
+Date:   Tue Oct 15 23:58:23 2024 -0300
+
+    carga productos por xls
+
+[33mcommit f8b06c2210b3a2c258d4e4b1225299a2520ff3e7[m
+Author: Alan <alan.gpagliardini@gmail.com>
+Date:   Tue Oct 15 22:27:36 2024 -0300
+
+    mejorando redundancia en ventas
+
+[33mcommit 361ac24c601c4714200143d0c6cd6749b85b8887[m
+Author: Alan <alan.gpagliardini@gmail.com>
+Date:   Tue Oct 15 22:08:08 2024 -0300
+
+    corrección en rutas api
+
+[33mcommit 6d7db6d77207199b9760b6c8c6b1645d4571e01d[m
+Author: Alan <alan.gpagliardini@gmail.com>
+Date:   Tue Oct 15 20:07:09 2024 -0300
+
+    reduciendo redundancia en rutas api
+
+[33mcommit cb0d4a280073b927dd1aff8d2ef84b676ba0c33f[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Tue Oct 15 14:58:04 2024 -0300
+
+    mejorando compras
+
+[33mcommit 8e6daab04f5ebcccffb9628191dab4960af45fc5[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Tue Oct 15 13:44:36 2024 -0300
+
+    mejorado compras
+
+[33mcommit d93356d40fa1e5fe0db2eb8ddccb767d38588211[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Tue Oct 15 13:38:45 2024 -0300
+
+    new try
+
+[33mcommit 6a0ed489629edf6542ec0706a79848f2dc800801[m
+Author: Alan <alan.gpagliardini@gmail.com>
+Date:   Mon Oct 14 20:48:38 2024 -0300
+
+    seguimos en compras..
+
+[33mcommit 0841a581de6ec3a9e9716866bed01ce6fe9774b2[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Mon Oct 14 15:36:29 2024 -0300
+
+    Compras T-T
+
+[33mcommit d4abcc03629e1f57decd205c3a888d86d42586ec[m
+Author: Alan <alan.gpagliardini@gmail.com>
+Date:   Sun Oct 13 23:24:46 2024 -0300
+
+    comenzado con modelo y vista compras
+
+[33mcommit 26571efa95dd2326661bff883b64edec4b62dbe5[m
+Author: Alan <alan.gpagliardini@gmail.com>
+Date:   Sun Oct 13 18:12:01 2024 -0300
+
+    daisyUI?
+
+[33mcommit d59bdd72bde29772b8e852c92c1b03b4976a7595[m
+Author: Alan <alan.gpagliardini@gmail.com>
+Date:   Sun Oct 13 14:46:14 2024 -0300
+
+    updated gitignore
+
+[33mcommit 0cecd6bbbe16a0fe5c7bc96fb445d9838e4f592d[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Sat Oct 12 15:12:09 2024 -0300
+
+    limpieza de archivos
+
+[33mcommit e4cf825218f8f72d6b3a56a848e592c49cd95c53[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Sat Oct 12 12:19:56 2024 -0300
+
+    seguimos con modularización
+
+[33mcommit 45370ed29a982cb32854088a5645b23890e456df[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Sat Oct 12 12:01:00 2024 -0300
+
+    modularización de la vista productos
+
+[33mcommit 9ce2bc4a5560151e4da12154781bbe517968341f[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Fri Oct 11 15:51:06 2024 -0300
+
+    agregado navegacion por factura
+
+[33mcommit 0fee180f0aca412293fe8d36b07f0acf6a667661[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Fri Oct 11 13:44:46 2024 -0300
+
+    to do
+
+[33mcommit ed4a98fcd70648d669f2837713b16078bb26718a[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Thu Oct 10 14:42:43 2024 -0300
+
+    todo
+
+[33mcommit 12f51068b2a8094c83395d67e919b2cbbadcde03[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Thu Oct 10 14:12:20 2024 -0300
+
+    mejorado template productos
+
+[33mcommit 0e04a07511c9f17a2ca19a65e977d90d29344dd4[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Wed Oct 9 14:16:17 2024 -0300
+
+    correccion de referencia a css en ventas
+
+[33mcommit b5168a4bdad0644fbfeb0ceb0eca40d0ec8a0e28[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Wed Oct 9 13:27:50 2024 -0300
+
+    agregado costo al modelo productos
+
+[33mcommit 035755f77411e16a61643c2a7e50593da6958cf4[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Wed Oct 9 12:50:47 2024 -0300
+
+    logica de stock
+
+[33mcommit a7c503a2e5e6091a680d3c8da38d4f4f53e56a76[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Wed Oct 9 12:41:46 2024 -0300
+
+    comenzado con manejo de stock en productos y venta
+
+[33mcommit 0aa4d9027ca29b78c2c6759acbeac2dc9b4397c8[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Tue Oct 8 16:00:21 2024 -0300
+
+    seguimos con endpoints
+
+[33mcommit 7cbe0f1cbdd56dc8dabb7f658f09293b7acbe5c6[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Tue Oct 8 15:45:44 2024 -0300
+
+    comenzado con rutas api
+
+[33mcommit 3c5cd733add60f69ec0b43d34ea37bce17e13928[m
+Author: Alan <alan.gpagliardini@gmail.com>
+Date:   Mon Oct 7 20:04:17 2024 -0300
+
+    mhe
+
+[33mcommit 4fa787280d7339da3662a4031baeda33ca2b1c5b[m
+Author: Alan <alan.gpagliardini@gmail.com>
+Date:   Mon Oct 7 19:45:29 2024 -0300
+
+    agregado rutas y vistas bases
+
+[33mcommit 4fa0848d6ce32cb08579585744c65d24cea6f28f[m
+Author: Alan <alan.gpagliardini@gmail.com>
+Date:   Mon Oct 7 19:00:25 2024 -0300
+
+    correccion en constraints
+
+[33mcommit 7e3e9aa09de9659e864560fe87b537d217a7a510[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Mon Oct 7 15:02:25 2024 -0300
+
+    mejorado productos
+
+[33mcommit 7033c90853581e9529d7362817ff21db267fa547[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Mon Oct 7 13:13:34 2024 -0300
+
+    crud tipos marcas rubros
+
+[33mcommit 6d3f3389e4de34b4f7a4a90b56e655873cc7065f[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Mon Oct 7 11:45:58 2024 -0300
+
+    agregado modelo detalle_venta
+
+[33mcommit baf2251af4c4d88fb5b1519838f56b475348c5de[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Mon Oct 7 11:28:55 2024 -0300
+
+    modularizacion de js
+
+[33mcommit 1ce67b2fa6cbb1c9403d73d7435b0eb97e57fc8d[m
+Author: Alan <alan.gpagliardini@gmail.com>
+Date:   Sun Oct 6 18:36:05 2024 -0300
+
+    correcion en template ventas.
+
+[33mcommit 37931d752ea8e5f0a6769edbb0720fee243e5322[m
+Author: Alan <alan.gpagliardini@gmail.com>
+Date:   Sun Oct 6 13:55:08 2024 -0300
+
+    ventas template mejorado
+
+[33mcommit 4eca2a2bf6678530cf2c28b962ea6c3e9c33a35c[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Fri Oct 4 11:33:28 2024 -0300
+
+    correccion en procesado de facturas
+
+[33mcommit 71c6935e04f6486f30bc9ad81ae71b521076c699[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Thu Oct 3 15:32:35 2024 -0300
+
+    css en ventas
+
+[33mcommit e7542a53ec9514c66ec7f74f41b6f23d3c3015f9[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Thu Oct 3 14:20:42 2024 -0300
+
+    script busqueda por modal
+
+[33mcommit 995c8454b6518edc1c8aa7ae6984fe5c072dced2[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Thu Oct 3 13:41:06 2024 -0300
+
+    script de focus en modal
+
+[33mcommit ba8bb66b8a37e0065fbcbdccf0e29f76314908d3[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Thu Oct 3 10:37:10 2024 -0300
+
+    agregado crud productos
+
+[33mcommit 7a09955186d3f6a41b5c372b744a20a819a1f415[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Thu Oct 3 10:14:11 2024 -0300
+
+    ventas terminado
+
+[33mcommit e49c6e2bf961c24742e38aa72af0e3e493f0349f[m
+Author: kaprix22 <98074046+kaprix22@users.noreply.github.com>
+Date:   Wed Oct 2 15:05:22 2024 -0300
+
+    first commit

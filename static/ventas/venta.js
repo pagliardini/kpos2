@@ -1,7 +1,7 @@
 // venta.js
 function procesarVenta() {
     const idsProductos = productosSeleccionados.map(p => ({ id: p.id, cantidad: p.cantidad }));
-    console.log("Productos enviados para la venta:", idsProductos);  // Log para verificar cantidades
+    console.log("Productos enviados para la venta:", idsProductos);
 
     fetch(urlProcesarVenta, {
         method: 'POST',
@@ -10,13 +10,47 @@ function procesarVenta() {
         },
         body: JSON.stringify({ productos: idsProductos })
     }).then(() => {
-        alert('Venta procesada con éxito');
-        window.location.reload();
+        // Mostrar notificación de éxito con Toastify
+        Toastify({
+            text: "La venta ha sido procesada con éxito.",
+            duration: 1000,
+            gravity: "top",
+            position: 'right',
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+        }).showToast();
+
+        // Recargar la página después de un pequeño retraso
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
     }).catch((error) => {
         console.error('Error procesando la venta:', error);
+
+        // Mostrar notificación de error con Toastify
+        Toastify({
+            text: "Ocurrió un error al procesar la venta. Inténtalo de nuevo.",
+            duration: 3000,
+            gravity: "top",
+            position: 'right',
+            backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
+        }).showToast();
     });
 }
 
+// Listener para el campo de código
+document.getElementById('codigo').addEventListener('keydown', function(event) {
+    const codigoInput = document.getElementById('codigo').value.trim();
+
+    if (event.key === 'Enter') {
+        event.preventDefault();
+
+        if (codigoInput === '' && productosSeleccionados.length > 0) {
+            procesarVenta();  // Procesa la venta si hay productos seleccionados
+        } else if (codigoInput !== '') {
+            agregarProductoPorCodigo(codigoInput);  // Agrega producto por código
+        }
+    }
+});
 document.addEventListener('keydown', function(event) {
     if (event.key === 'F6') {
         event.preventDefault();

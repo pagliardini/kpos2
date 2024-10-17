@@ -15,7 +15,14 @@ function agregarProductoPorCodigo(codigo) {
                 }
                 actualizarListaProductos();
             } else {
-                alert("Producto no encontrado");
+                // Usar Toastify para mostrar el mensaje de error
+                Toastify({
+                    text: `Producto no encontrado: El código ${codigo} no existe en el sistema.`,
+                    duration: 3000, // Duración en milisegundos
+                    gravity: "top", // top or bottom
+                    position: 'right', // left, center or right
+                    backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)", // Color de fondo
+                }).showToast();
             }
             document.getElementById('codigo').value = '';
             document.getElementById('codigo').focus();
