@@ -6,9 +6,12 @@ from views.principal import principal_bp
 from views.compras import compras_bp
 from views.caja import caja_bp
 from views.productos import register_productos_blueprints  # Importar la función de productos modularizada
+from flask_cors import CORS
+
 
 def create_app():
     app = Flask(__name__, static_folder='static')
+    CORS(app)  # This will enable CORS for all routes
     app.secret_key = 'clave_secreta_random'  # Clave secreta
     app.config.from_object(Config)
 
