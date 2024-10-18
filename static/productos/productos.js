@@ -78,3 +78,43 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault(); // Prevenir el envío del formulario por defecto
+
+            const formData = new FormData(form);
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                // Si la respuesta es exitosa
+                Toastify({
+                    text: "Producto agregado exitosamente!",
+                    duration: 3000,
+                    gravity: "top",
+                    position: 'right',
+                    backgroundColor: "#4CAF50",
+                    className: "info",
+                }).showToast();
+
+                // Opcional: Reiniciar el formulario o redirigir
+                form.reset(); // Reinicia el formulario
+            } else {
+                const errorData = await response.json();
+                // Mostrar el toast de error
+                Toastify({
+                    text: errorData.message || "Error al agregar el producto.",
+                    duration: 3000,
+                    gravity: "top",
+                    position: 'right',
+                    backgroundColor: "#f44336",
+                    className: "error",
+                }).showToast();
+            }
+        });
+    });

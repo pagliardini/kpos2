@@ -14,7 +14,7 @@
         <h2 class="text-2xl font-semibold mb-4">Agregar Producto</h2>
         <form action="{{ url_for('productos.agregar_producto') }}" method="POST" class="mb-6">
             <label class="input input-bordered flex items-center gap-2 mb-2">
-                <input type="text" name="nombre" placeholder="Nombre del producto" required class="grow" />
+                <input type="text" name="nombre" placeholder="Nombre del producto" required class="grow" autocomplete="off">
                 <i class="bi bi-box-fill h-4 w-4 opacity-70"></i>
             </label>
 
@@ -29,7 +29,7 @@
             </label>
 
             <label class="input input-bordered flex items-center gap-2 mb-2">
-                <input type="text" id="codigoInput" name="codigo" placeholder="Código de barras" required class="grow" />
+                <input type="text" id="codigoInput" name="codigo" placeholder="Código de barras" required class="grow" autocomplete="off">
                 <i class="bi bi-upc h-4 w-4 opacity-70"></i>
             </label>
 
