@@ -1,5 +1,16 @@
+from pickle import FALSE
+
 from extensions import db
 from datetime import datetime
+
+
+class Cliente(db.Model):
+    __tablename__ = 'clientes'
+    id = db.Column(db.Integer, primary_key=True)
+    numero = db.Column(db.Integer, nullable=False)
+    nombre = db.Column(db.String(50), nullable=False)
+    apellido = db.Column(db.String(50), nullable=True)
+
 
 class Factura(db.Model):
     __tablename__ = 'facturas'
@@ -17,3 +28,8 @@ class FacturaDetalle(db.Model):
     cantidad = db.Column(db.Integer, nullable=False)
     precio_unitario = db.Column(db.Float, nullable=False)
 
+class FormaCobro(db.Model):
+    __tablename__ = 'formas_cobro'
+    id = db.Column(db.Integer, primary_key=True)
+    denominacion = db.Column(db.String(50), nullable=False)
+    recargo = db.Column(db.Float, nullable=False)

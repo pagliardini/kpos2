@@ -4,7 +4,8 @@ from datetime import datetime, timezone
 
 # Importar los modelos
 from models import (Factura, FacturaDetalle, Marca, Proveedor,
-                    Compra, CompraDetalle, Rubro, Tipo, Producto)
+                    Compra, CompraDetalle, Rubro, Tipo, Producto,
+                    Cliente, FormaCobro)
 
 app = create_app()
 
@@ -96,6 +97,20 @@ with app.app_context():
                                      producto_nombre='Producto B', cantidad=5,
                                      precio_unitario=20.0)
     db.session.add_all([detalle_compra1, detalle_compra2])
+
+    # Tabla clientes
+
+    cliente1 = Cliente(id=1, nombre='Consumidor', apellido='Final', numero=99999999)
+    cliente2 = Cliente(id=2, nombre='Alan', apellido='Garcia', numero=35917637)
+    db.session.add_all([cliente1, cliente2])
+
+    # Formas de cobro
+
+    fcobro1 = FormaCobro(id=1, denominacion='Efectivo', recargo=0.0)
+    fcobro2 = FormaCobro(id=2, denominacion='Mercado Pago', recargo=0.0)
+    fcobro3 = FormaCobro(id=3, denominacion='Débito', recargo=7.0)
+    fcobro4 = FormaCobro(id=4, denominacion='Crédito', recargo=15)
+    db.session.add_all([fcobro1, fcobro2, fcobro3, fcobro4])
 
     # Confirmar los cambios y cerrar la sesión
     db.session.commit()

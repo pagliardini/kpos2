@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='ventas/styles-venta.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-
 </head>
 <body class="bg-gray-100">
 
@@ -17,42 +16,47 @@
     <br>
 
     <!-- Contenedor principal con flexbox para organizar columnas -->
-    <div class="flex justify-between space-x-4 px-6">
-        <!-- Columna izquierda -->
-        <div class="left-column w-4/5 bg-white shadow-md rounded-lg p-4">
-
-<br>
+    <div class="flex justify-between space-x-4 px-6" style="height: 600px;">
+        <!-- Columna izquierda con altura fija -->
+        <div class="left-column w-4/5 bg-white shadow-md rounded-lg p-4 h-full overflow-y-auto">
+            <br>
             <!-- Tabla para productos -->
             <div class="overflow-x-auto">
-<table class="min-w-full bg-white">
-    <thead>
-        <tr class="w-full bg-white">
-            <th class="text-left py-2 px-0">Código</th>
-            <th class="text-left py-2 px-0">Descripción</th>
-            <th class="text-left py-2 px-0">Cantidad</th>
-            <th class="text-right py-2 px-1">Precio</th>
-            <th class="text-right py-2 px-4">Subtotal</th>
-            <th class="text-center py-2 px-1">Acc.</th>
-        </tr>
-    </thead>
-    <tbody id="lista-productos">
-        <!-- Aquí se llenarán los productos agregados -->
-    </tbody>
-</table>            </div>
-
-            <h3 id="total" class="text-xl font-bold mt-4">Total: $0.00</h3>
-
-            <div class="mt-4 flex space-x-4">
-                <button onclick="procesarVenta()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-500 transition duration-300">Realizar Venta</button>
-                <button onclick="mostrarModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition duration-300">Buscar producto por descripción</button>
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr class="w-full bg-white">
+                            <th class="text-left py-2 px-0">Código</th>
+                            <th class="text-left py-2 px-0">Descripción</th>
+                            <th class="text-left py-2 px-0">Cantidad</th>
+                            <th class="text-right py-2 px-1">Precio</th>
+                            <th class="text-right py-2 px-4">Subtotal</th>
+                            <th class="text-center py-2 px-1">Acc.</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-productos">
+                        <!-- Aquí se llenarán los productos agregados -->
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- Columna derecha (funcionalidad adicional) -->
-        <div class="right-column w-2/5 bg-white shadow-md rounded-lg p-4">
-            <form id="form-venta" onsubmit="event.preventDefault(); agregarProductoPorCodigo(document.getElementById('codigo').value);">
-                <input type="text" id="codigo" placeholder="Código de producto" required class="border border-gray-300 rounded p-2 mb-4 w-full">
-            </form>
+        <!-- Columna derecha con dos contenedores -->
+        <div class="flex flex-col w-2/5 space-y-4">
+            <!-- Contenedor derecho superior con altura fija -->
+            <div class="right-column w-full bg-white shadow-md rounded-lg p-4" style="height: 900px;">
+                <form id="form-venta" onsubmit="event.preventDefault(); agregarProductoPorCodigo(document.getElementById('codigo').value);">
+                    <input type="text" id="codigo" placeholder="Código de producto" required class="border border-gray-300 rounded p-2 mb-4 w-full">
+                </form>
+                <div class="mt-4 flex space-x-4">
+                    <button onclick="procesarVenta()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-500 transition duration-300">Realizar Venta</button>
+                    <button onclick="mostrarModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition duration-300">Buscar producto por descripción</button>
+                </div>
+            </div>
+
+            <!-- Tercer contenedor (total), también con altura fija -->
+            <div class="right-column bg-green-500 shadow-md rounded-lg p-4" style="height: 230px;">
+                <h3 id="total" class="text-5xl font-bold align-center">Total: $0.00</h3>
+            </div>
         </div>
     </div>
 
@@ -76,8 +80,6 @@
     <script src="{{ url_for('static', filename='ventas/venta.js') }}"></script>
     <script src="{{ url_for('static', filename='ventas/navegarfactura.js') }}"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
-
 
 </body>
 </html>
