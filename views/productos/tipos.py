@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from extensions import db
 from models.producto import Tipo
 
@@ -9,7 +9,8 @@ tipos_bp = Blueprint('tipos', __name__)
 @tipos_bp.route('/tipos', methods=['GET'])
 def listar_tipos():
     tipos = Tipo.query.all()
-    return render_template('tipos.html', tipos=tipos)
+    tipos_json = [{'id': tipo.id, 'nombre': tipo.nombre} for tipo in tipos]
+    return jsonify(tipos_json)
 
 
 @tipos_bp.route('/tipos/agregar', methods=['POST'])

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from models.producto import Rubro
 from extensions import db
 
@@ -8,7 +8,8 @@ rubros_bp = Blueprint('rubros', __name__)
 @rubros_bp.route('/rubros', methods=['GET'])
 def listar_rubros():
     rubros = Rubro.query.all()
-    return render_template('rubros.html', rubros=rubros)
+    rubros_json = [{'id': rubro.id, 'nombre': rubro.nombre} for rubro in rubros]
+    return jsonify(rubros_json)
 
 
 @rubros_bp.route('/rubros/agregar', methods=['POST'])
