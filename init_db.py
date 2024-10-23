@@ -106,7 +106,7 @@ with app.app_context():
 
     # Formas de cobro
 
-    fcobro1 = FormaCobro(id=1, denominacion='Efectivo', recargo=0.0)
+    fcobro1 = FormaCobro(id=1, denominacion='Efectivo', recargo=0.0, es_default=True)
     fcobro2 = FormaCobro(id=2, denominacion='Mercado Pago', recargo=0.0)
     fcobro3 = FormaCobro(id=3, denominacion='Débito', recargo=7.0)
     fcobro4 = FormaCobro(id=4, denominacion='Crédito', recargo=15)

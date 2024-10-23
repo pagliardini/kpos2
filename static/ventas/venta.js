@@ -13,16 +13,16 @@ function procesarVenta() {
         // Mostrar notificación de éxito con Toastify
         Toastify({
             text: "La venta ha sido procesada con éxito.",
-            duration: 1000,
-            gravity: "top",
-            position: 'right',
+            duration: 1300,
+            gravity: "bottom",
+            position: 'left',
             backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
         }).showToast();
 
         // Recargar la página después de un pequeño retraso
         setTimeout(() => {
             window.location.reload();
-        }, 1000);
+        }, 1300);
     }).catch((error) => {
         console.error('Error procesando la venta:', error);
 
@@ -30,8 +30,8 @@ function procesarVenta() {
         Toastify({
             text: "Ocurrió un error al procesar la venta. Inténtalo de nuevo.",
             duration: 3000,
-            gravity: "top",
-            position: 'right',
+            gravity: "bottom",
+            position: 'left',
             backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
         }).showToast();
     });

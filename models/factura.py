@@ -33,3 +33,4 @@ class FormaCobro(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     denominacion = db.Column(db.String(50), nullable=False)
     recargo = db.Column(db.Float, nullable=False)
+    es_default = db.Column(db.Boolean, nullable=False, default=False)

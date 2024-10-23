@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from extensions import db
 from models.producto import Marca
 
@@ -9,7 +9,8 @@ marcas_bp = Blueprint('marcas', __name__)
 @marcas_bp.route('/marcas', methods=['GET'])
 def listar_marcas():
     marcas = Marca.query.all()
-    return render_template('marcas.html', marcas=marcas)
+    marcas_json = [{'id': marca.id, 'nombre': marca.nombre} for marca in marcas]
+    return jsonify(marcas_json)
 
 
 @marcas_bp.route('/marcas/agregar', methods=['POST'])

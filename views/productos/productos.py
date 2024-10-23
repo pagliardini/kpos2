@@ -10,10 +10,9 @@ productos_bp = Blueprint('productos', __name__)
 
 @productos_bp.route('/productos', methods=['GET'])
 def listar_productos():
-    limit = request.args.get('limit', 50, type=int)  # Limitar a 50 por defecto
-    offset = request.args.get('offset', 0, type=int)
 
-    productos = Producto.query.limit(limit).offset(offset).all()
+
+    productos = Producto.query.all()
     marcas = Marca.query.all()
     rubros = Rubro.query.all()
     tipos = Tipo.query.all()
