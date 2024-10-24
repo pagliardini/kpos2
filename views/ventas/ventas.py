@@ -64,6 +64,7 @@ def buscar_producto():
     if producto:
         return jsonify({
             'id': producto.id,
+            'codigo': producto.codigo1,
             'nombre': producto.nombre,
             'precio': producto.precio
         })
