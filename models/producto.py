@@ -1,4 +1,5 @@
 from extensions import db
+from datetime import datetime
 
 class Marca(db.Model):
     __tablename__ = 'marcas'
@@ -43,6 +44,7 @@ class Producto(db.Model):
     codigo1 = db.Column(db.String(50), nullable=False)
     # Columna para manejar el stock (no nullable)
     stock = db.Column(db.Integer, nullable=False, default=0)
+    fecha_creacion = db.Column(db.DateTime, default=datetime.utcnow)
 
 
     # Claves foráneas para relacionar Producto con Marca, Rubro y Tipo
