@@ -5,7 +5,7 @@ from views.ventas import ventas_bp
 from views.principal import principal_bp
 from views.compras import compras_bp
 from views.caja import caja_bp
-from views.productos import register_productos_blueprints  # Importar la función de productos modularizada
+from views.productos import register_productos_blueprints
 from flask_cors import CORS
 
 

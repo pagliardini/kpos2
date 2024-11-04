@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from models.producto import Producto
-from models.factura import Factura, FacturaDetalle
+from models.factura import Factura, FacturaDetalle, FormaCobro
 from extensions import db
 
 ventas_bp = Blueprint('ventas', __name__)
@@ -93,3 +93,9 @@ def buscar_producto_por_id():
             'precio': producto.precio
         })
     return jsonify(None), 404
+
+@ventas_bp.route('/ventas/formascobro', methods=['GET'])
+def formas_cobro():
+    formas_cobro = FormaCobro.query.all()
+    formas_cobrojson = [{'id': forma.id, 'denominacion': forma.denominacion, 'recargo': forma.recargo} for forma in formas_cobro]
+    return jsonify(formas_cobrojson)
