@@ -17,7 +17,8 @@ class Factura(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fecha = db.Column(db.DateTime, default=datetime.utcnow)
     total = db.Column(db.Float, nullable=False)
-    # Aquí puedes agregar una relación con el modelo Producto si es necesario
+    forma_cobro_id = db.Column(db.Integer, db.ForeignKey('formas_cobro.id'), nullable=False)  # Referencia a FormaCobro
+    forma_cobro = db.relationship('FormaCobro', backref='facturas')  # Relación con FormaCobro
 
 class FacturaDetalle(db.Model):
     __tablename__ = 'facturas_detalles'

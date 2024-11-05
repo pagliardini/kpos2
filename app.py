@@ -11,11 +11,10 @@ from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__, static_folder='static')
-    CORS(app)  # This will enable CORS for all routes
-    app.secret_key = 'clave_secreta_random'  # Clave secreta
+    CORS(app)
+    app.secret_key = 'clave_secreta_random'
     app.config.from_object(Config)
 
-    # Inicializamos SQLAlchemy
     db.init_app(app)
 
     # Registramos los blueprints
@@ -24,11 +23,10 @@ def create_app():
     app.register_blueprint(compras_bp)
     app.register_blueprint(caja_bp)
 
-    # Registrar blueprints de productos desde la función modularizada
     register_productos_blueprints(app)
 
     return app
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(debug=True)  # Asegúrate de incluir esta línea para iniciar el servidor
+    app.run(debug=True)

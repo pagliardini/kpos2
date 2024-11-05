@@ -71,8 +71,8 @@ with app.app_context():
     db.session.add_all([producto1, producto2])
 
     # Insertar datos en la tabla facturas
-    factura1 = Factura(fecha=datetime.now(timezone.utc), total=150.0)  # Cambiado aquí
-    factura2 = Factura(fecha=datetime.now(timezone.utc), total=300.0)  # Cambiado aquí
+    factura1 = Factura(fecha=datetime.now(timezone.utc), total=150.0, forma_cobro_id=1)  # Cambiado aquí
+    factura2 = Factura(fecha=datetime.now(timezone.utc), total=300.0, forma_cobro_id=2)  # Cambiado aquí
     db.session.add_all([factura1, factura2])
 
     # Insertar datos en la tabla facturas_detalles

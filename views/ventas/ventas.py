@@ -15,6 +15,7 @@ def ventas():
 def procesar_venta():
     data = request.get_json()
     productos = data.get('productos', [])
+    forma_cobro_id = data.get('forma_cobro_id')  # Obtener la forma de cobro del JSON
     total_venta = 0
 
     if productos:
@@ -35,6 +36,7 @@ def procesar_venta():
                 )
                 detalles_factura.append(detalle)
 
+                # Actualizar stock
                 if cantidad < 0:
                     producto.stock += abs(cantidad)
                 else:
@@ -44,7 +46,13 @@ def procesar_venta():
             else:
                 print(f"Producto con ID {id_producto} no encontrado o sin precio")
 
-        nueva_factura = Factura(total=total_venta)
+        # Si no se proporciona una forma de cobro, buscar la predeterminada
+        if not forma_cobro_id:
+            forma_cobro_default = FormaCobro.query.filter_by(es_default=True).first()
+            forma_cobro_id = forma_cobro_default.id if forma_cobro_default else None
+
+        # Crear la nueva factura con la forma de cobro
+        nueva_factura = Factura(total=total_venta, forma_cobro_id=forma_cobro_id)
         db.session.add(nueva_factura)
         db.session.commit()
 
